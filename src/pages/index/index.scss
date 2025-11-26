@@ -1,0 +1,552 @@
+@import "~taro-ui/dist/style/components/tab-bar.scss";
+@import "~taro-ui/dist/style/components/badge.scss";
+@import "~taro-ui/dist/style/components/icon.scss";
+
+// main
+.page {
+    display: flex;
+    flex-direction: column;
+    height: 95vh;
+    /* 整屏高度 */
+    box-sizing: border-box;
+}
+
+.page-container {
+    flex: 1;
+    /* 吃掉所有剩余空间 */
+    overflow-y: auto;
+    /* 内容超出时内部滚动 */
+    // background-color: rebeccapurple;
+}
+
+.footer {
+    height: 120px;
+    /* 只给底部固定高度 */
+    flex-shrink: 0;
+    /* 防止被压缩 */
+    background-color: saddlebrown;
+}
+
+.not-show {
+    display: none;
+    opacity: 0;
+}
+
+.show {
+    display: block;
+}
+
+
+// homeActive
+// 变量定义
+$primary: #4F46E5;
+$primary-light: #EEF2FF;
+$text-main: #1F2937;
+$text-sub: #6B7280;
+$bg-color: #F3F4F6;
+$card-bg: #FFFFFF;
+$accent-orange: #F59E0B;
+$accent-orange-light: #FFF7ED;
+$accent-orange-text: #9A3412;
+$accent-green: #10B981;
+$accent-green-light: #ECFDF5;
+$accent-green-text: #065F46;
+
+$radius-lg: 20px;
+$radius-md: 16px;
+$radius-sm: 8px;
+
+// 页面容器
+.training-plan-page {
+    min-height: 100vh;
+    background-color: $bg-color;
+    padding: 30px 24px; // 左右留白，750设计稿下看起来比较舒适
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: $text-main;
+}
+
+// 顶部 Header
+.plan-header {
+    margin-bottom: 40px;
+    text-align: center;
+
+    .main-title {
+        font-size: 40px; // 对应 h1
+        font-weight: 800;
+        color: $text-main;
+        margin-bottom: 16px;
+    }
+
+    .meta {
+        color: $text-sub;
+        font-size: 24px;
+        background: white;
+        display: inline-block;
+        padding: 8px 24px;
+        border-radius: 40px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+}
+
+// PhaseCard (手风琴卡片)
+.phase-card {
+    background: $card-bg;
+    border-radius: $radius-lg;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 32px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    &.is-open {
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+
+        .chevron-arrow {
+            transform: rotate(-135deg); // 展开时箭头旋转
+            margin-top: 5px;
+        }
+    }
+
+    // 头部点击区
+    .phase-summary {
+        padding: 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start; // 对齐顶部，防止文字多时箭头跑偏
+        background: #fff;
+
+        &:active {
+            background-color: #f9fafb; // 点击反馈
+        }
+    }
+
+    .phase-header-content {
+        flex: 1;
+        padding-right: 20px;
+
+        .phase-title-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+
+            .title-text {
+                font-size: 32px;
+                font-weight: 700;
+                color: $text-main;
+            }
+        }
+
+        .phase-desc {
+            color: $text-sub;
+            font-size: 26px;
+            line-height: 1.5;
+        }
+    }
+
+    // 纯 CSS 箭头 (替代 SVG)
+    .chevron-arrow {
+        width: 16px;
+        height: 16px;
+        border-right: 4px solid $text-sub;
+        border-bottom: 4px solid $text-sub;
+        transform: rotate(45deg);
+        transition: transform 0.3s ease;
+        margin-top: 10px; // 视觉微调
+    }
+
+    // 内容区域
+    .phase-body {
+        padding: 0 32px 40px 32px;
+        border-top: 2px solid $bg-color;
+        // 简单的淡入动画
+        animation: fadeIn 0.3s ease-out;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// 分隔标题
+.section-title {
+    font-size: 24px;
+    color: $text-sub;
+    font-weight: 700;
+    margin: 40px 0 24px 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    &::after {
+        content: '';
+        flex: 1;
+        height: 2px;
+        background: #E5E7EB;
+    }
+}
+
+// 统计网格
+.schedule-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.stat-box {
+    background: #F9FAFB;
+    padding: 24px;
+    border-radius: $radius-md;
+    text-align: center;
+
+    .stat-value {
+        font-size: 40px;
+        font-weight: 800;
+        color: $text-main;
+    }
+
+    .stat-label {
+        font-size: 22px;
+        color: $text-sub;
+        margin-top: 8px;
+    }
+}
+
+.stat-note {
+    grid-column: 1 / -1;
+    font-size: 26px;
+    color: $primary;
+    background: $primary-light;
+    padding: 20px;
+    border-radius: $radius-sm;
+    text-align: center;
+}
+
+// Routine 卡片
+.routine-container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.routine-card {
+    background: #FFFFFF;
+    border: 2px solid #E5E7EB;
+    border-radius: $radius-md;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+
+    .card-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: $text-main;
+    }
+
+    .card-icon {
+        width: 56px;
+        height: 56px;
+        background: $primary-light;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+    }
+}
+
+// 变体与细节组件样式
+// (对应 Components.tsx 中的 className)
+
+.warmup-box {
+    background: $accent-orange-light;
+    border-left: 6px solid $accent-orange;
+    padding: 24px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+
+    .warmup-title {
+        font-size: 26px;
+        font-weight: 700;
+        color: $accent-orange-text;
+        margin-bottom: 8px;
+    }
+
+    .warmup-content {
+        font-size: 26px;
+        color: $accent-orange-text;
+    }
+}
+
+.targets-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+
+    .target-item {
+        background: $accent-green-light;
+        padding: 16px 8px;
+        border-radius: $radius-sm;
+        text-align: center;
+
+        .target-val {
+            font-size: 28px;
+            font-weight: 700;
+            color: $accent-green-text;
+            margin-bottom: 4px;
+        }
+
+        .target-lbl {
+            font-size: 22px;
+            color: #047857;
+        }
+    }
+}
+
+.variant-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.variant-item {
+    background: #F9FAFB;
+    border: 2px solid #F3F4F6;
+    border-radius: $radius-md;
+    padding: 32px;
+    position: relative;
+
+    .variant-tag {
+        position: absolute;
+        top: 32px;
+        right: 32px;
+        font-size: 20px;
+        padding: 4px 12px;
+        border-radius: 8px;
+        background: #E5E7EB;
+        color: $text-sub;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .variant-title {
+        font-weight: 700;
+        font-size: 30px;
+        margin-bottom: 8px;
+        padding-right: 100px; // 防止标题太长遮挡右上角标签
+        color: $text-main;
+    }
+
+    .variant-desc {
+        font-size: 24px;
+        color: $text-sub;
+        margin-bottom: 20px;
+        line-height: 1.4;
+    }
+
+    .params-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 16px;
+
+        .param-pill {
+            font-size: 24px;
+            background: white;
+            border: 2px solid #E5E7EB;
+            padding: 6px 16px;
+            border-radius: 24px;
+            color: $text-main;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    }
+
+    .note-box {
+        font-size: 24px;
+        color: $text-sub;
+        font-style: italic;
+        border-top: 2px dashed #E5E7EB;
+        padding-top: 12px;
+        margin-top: 12px;
+    }
+
+    .session-block {
+        margin-top: 20px;
+
+        .session-label {
+            font-size: 22px;
+            font-weight: 700;
+            color: $text-sub;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .exercise-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 2px solid #E5E7EB;
+            font-size: 26px;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            .ex-name {
+                font-weight: 600;
+                color: $text-main;
+            }
+
+            .ex-meta {
+                color: $text-sub;
+                font-size: 24px;
+            }
+        }
+    }
+}
+
+// Badge 组件样式 (对应 Components.tsx)
+.badge {
+    font-size: 20px;
+    padding: 4px 16px;
+    border-radius: 99px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-flex; // 保持行内布局
+    align-items: center;
+    justify-content: center;
+
+    &.badge-blue {
+        background: $primary-light;
+        color: $primary;
+    }
+}
+
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: $bg-color; // 防止透明背景导致内容重叠
+    padding-bottom: 20px; // 给下方内容一点呼吸空间
+}
+
+.plan-tabs-container {
+    display: flex;
+    background: #FFFFFF;
+    padding: 0 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+    // 如果是全屏页面，这里不需要圆角；如果是卡片式，可以加圆角
+}
+
+.tab-item {
+    flex: 1;
+    text-align: center;
+    padding: 30px 0;
+    position: relative;
+    transition: all 0.3s;
+
+    .tab-text {
+        font-size: 28px;
+        color: $text-sub;
+        font-weight: 500;
+    }
+
+    &.active {
+        .tab-text {
+            color: $primary;
+            font-weight: 700;
+            font-size: 30px;
+        }
+    }
+
+    .active-line {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 6px;
+        background-color: $primary;
+        border-radius: 6px 6px 0 0;
+    }
+}
+
+.training-plan-page {
+    min-height: 100vh;
+    background-color: $bg-color;
+    // padding: 30px 24px; // 移除顶部的 padding，因为现在有 Tab 了
+    padding: 0 0 40px 0; // 只留底部的 padding
+}
+
+//新的 plan-header
+.plan-header {
+    margin: 40px 24px; // 标题的 margin 移到这里
+    text-align: center;
+
+    .main-title {
+        font-size: 40px;
+        font-weight: 800;
+        color: $text-main;
+        margin-bottom: 16px;
+    }
+
+    .meta {
+        // ... 保持之前的样式
+        color: $text-sub;
+        font-size: 24px;
+        background: white;
+        display: inline-block;
+        padding: 8px 24px;
+        border-radius: 40px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+}
+
+.plan-content {
+    padding: 0 24px; // 内容区域左右留白
+}
+
+// 空状态样式
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 0;
+    opacity: 0.6;
+
+    .empty-icon {
+        font-size: 80px;
+        margin-bottom: 20px;
+    }
+
+    .empty-text {
+        font-size: 28px;
+        color: $text-sub;
+    }
+}
+
+// historyActive
+
+// MineActive

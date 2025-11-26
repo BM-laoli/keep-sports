@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健身训练计划</title>
+    <style>
+        :root {
+            --primary: #4F46E5; /* Indigo 600 */
+            --primary-light: #EEF2FF;
+            --text-main: #1F2937;
+            --text-sub: #6B7280;
+            --bg-color: #F3F4F6;
+            --card-bg: #FFFFFF;
+            --accent-orange: #F59E0B;
+            --accent-green: #10B981;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 8px;
+            --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .plan-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .plan-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            letter-spacing: -0.025em;
+        }
+        .plan-header .meta {
+            color: var(--text-sub);
+            font-size: 0.9rem;
+            background: white;
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* Phase Card (Accordion) */
+        .phase-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 24px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .phase-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Accordion Summary (Clickable Header) */
+        details > summary {
+            list-style: none;
+            padding: 24px 32px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        
+        details > summary::-webkit-details-marker { display: none; }
+
+        .phase-header-content h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .badge-blue { background: var(--primary-light); color: var(--primary); }
+        
+        .phase-desc {
+            color: var(--text-sub);
+            margin-top: 6px;
+            font-size: 1rem;
+        }
+
+        .chevron {
+            width: 24px;
+            height: 24px;
+            transition: transform 0.3s ease;
+            color: var(--text-sub);
+        }
+        details[open] .chevron { transform: rotate(180deg); }
+
+        /* Expanded Content */
+        .phase-body {
+            padding: 0 32px 32px 32px;
+            border-top: 1px solid #F3F4F6;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-sub);
+            font-weight: 700;
+            margin: 32px 0 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #E5E7EB;
+        }
+
+        /* Schedule Grid */
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .stat-box {
+            background: #F9FAFB;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        .stat-value { font-size: 1.5rem; font-weight: 800; color: var(--text-main); }
+        .stat-label { font-size: 0.85rem; color: var(--text-sub); margin-top: 4px; }
+        .stat-note { grid-column: 1 / -1; font-size: 0.9rem; color: var(--primary); background: var(--primary-light); padding: 12px; border-radius: var(--radius-sm); text-align: center;}
+
+        /* Routine Layout */
+        .routine-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        @media (max-width: 768px) {
+            .routine-container { grid-template-columns: 1fr; }
+        }
+
+        /* Routine Cards (Aerobic & Strength) */
+        .routine-card {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: var(--radius-md);
+            padding: 24px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        .card-header h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .card-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary-light);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Warmup Box */
+        .warmup-box {
+            background: #FFF7ED; /* Orange tint */
+            border-left: 4px solid var(--accent-orange);
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        .warmup-title { font-weight: 700; color: #9A3412; margin-bottom: 4px; display: block; }
+        .warmup-content { color: #9A3412; }
+
+        /* Targets Grid */
+        .targets-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .target-item {
+            background: #ECFDF5; /* Green tint */
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            text-align: center;
+        }
+        .target-val { font-weight: 700; color: #065F46; display: block; }
+        .target-lbl { font-size: 0.75rem; color: #047857; }
+
+        /* Variant/Session Cards */
+        .variant-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .variant-item {
+            background: #F9FAFB;
+            border: 1px solid #F3F4F6;
+            border-radius: var(--radius-md);
+            padding: 16px;
+            position: relative;
+        }
+        
+        .variant-tag {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: #E5E7EB;
+            color: var(--text-sub);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .variant-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 4px;
+            padding-right: 60px;
+        }
+        .variant-desc {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            margin-bottom: 12px;
+        }
+
+        /* Parameters List */
+        .params-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .param-pill {
+            font-size: 0.8rem;
+            background: white;
+            border: 1px solid #E5E7EB;
+            padding: 4px 10px;
+            border-radius: 20px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .param-pill span { font-weight: 600; color: var(--primary); }
+
+        .note-box {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            font-style: italic;
+            border-top: 1px dashed #E5E7EB;
+            padding-top: 8px;
+            margin-top: 8px;
+        }
+
+        /* Exercise Table */
+        .session-block {
+            margin-top: 12px;
+        }
+        .session-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .exercise-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #E5E7EB;
+            font-size: 0.9rem;
+        }
+        .exercise-row:last-child { border-bottom: none; }
+        .ex-name { font-weight: 600; }
+        .ex-meta { color: var(--text-sub); font-size: 0.85rem; }
+
+    </style>
+</head>
+<body>
+
+<div class="container" id="app">
+    <!-- Content will be injected by JS -->
+</div>
+
+<script>
+    // 1. Data Source
+    const data = {
+        "plan_overview": {
+            "title": "8周进阶跑步与力量训练计划",
+            "created_at": "2025-11-26"
+        },
+        "phases": [
+            {
+                "phase_id": 1,
+                "phase_name": "新手适应期",
+                "weeks": [1, 2],
+                "description": "建立习惯，保护关节和心肺",
+                "schedule": {
+                    "frequency_days_per_week": 5,
+                    "rest_days_per_week": 2,
+                    "weekly_pattern_note": "建议周三和周末休息"
+                },
+                "daily_routine": {
+                    "aerobic": {
+                        "warmup": {
+                            "duration_min": 5,
+                            "content": "快走 or 原地踏步 + 轻度关节活动"
+                        },
+                        "variants": [
+                            {
+                                "variant_name": "基础慢跑交替",
+                                "type": "interval",
+                                "description": "小碎步慢跑与快走交替",
+                                "params": {
+                                    "total_duration_min": { "min": 20, "max": 25 },
+                                    "interval_run_min": 1,
+                                    "interval_walk_min": 2,
+                                    "rounds": { "min": 6, "max": 8 },
+                                    "continuous_distance_km": null
+                                },
+                                "note": "如果1分钟跑太吃力，改为跑0.5分钟+走2.5分钟"
+                            }
+                        ]
+                    },
+                    "strength": {
+                        "daily_targets": {
+                            "pushups_count": { "min": 12, "max": 16 },
+                            "abs_count": { "min": 24, "max": 30 },
+                            "plank_sec": { "min": 40, "max": 60 }
+                        },
+                        "variants": [
+                            {
+                                "variant_name": "标准循环训练",
+                                "execution_mode": "circuit",
+                                "circuit_rounds": 2,
+                                "sessions": [
+                                    {
+                                        "session_label": "Main",
+                                        "exercises": [
+                                            { "name": "俯卧撑", "category": "push", "sets": 1, "reps": { "min": 6, "max": 8 }, "hold_sec": null, "rest_sec": 60 },
+                                            { "name": "卷腹", "category": "core", "sets": 1, "reps": { "min": 12, "max": 15 }, "hold_sec": null, "rest_sec": 30 },
+                                            { "name": "平板支撑", "category": "core_static", "sets": 1, "reps": null, "hold_sec": { "min": 20, "max": 30 }, "rest_sec": 30 }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "phase_id": 2,
+                "phase_name": "提高期",
+                "weeks": [3, 4],
+                "description": "逐步增加跑步时间和力量训练总量",
+                "schedule": {
+                    "frequency_days_per_week": 5,
+                    "rest_days_per_week": 2,
+                    "weekly_pattern_note": "有氧模式可根据体能二选一"
+                },
+                "daily_routine": {
+                    "aerobic": {
+                        "warmup": {
+                            "duration_min": 5,
+                            "content": "快速走路 + 关节活动（踝、膝、髋、肩）"
+                        },
+                        "variants": [
+                            {
+                                "variant_name": "进阶交替跑 (模式A)",
+                                "type": "interval",
+                                "description": "增加单次跑步时长",
+                                "params": {
+                                    "total_duration_min": { "min": 25, "max": 30 },
+                                    "interval_run_min": 2,
+                                    "interval_walk_min": 2,
+                                    "rounds": { "min": 6, "max": 7 },
+                                    "continuous_distance_km": null
+                                },
+                                "note": null
+                            },
+                            {
+                                "variant_name": "连续慢跑尝试 (模式B)",
+                                "type": "continuous",
+                                "description": "尝试不间断慢跑",
+                                "params": {
+                                    "total_duration_min": null,
+                                    "interval_run_min": null,
+                                    "interval_walk_min": null,
+                                    "rounds": null,
+                                    "continuous_distance_km": { "min": 1.5, "max": 2.0 }
+                                },
+                                "note": "速度放慢，能坚持为主"
+                            }
+                        ]
+                    },
+                    "strength": {
+                        "daily_targets": {
+                            "pushups_count": { "min": 40, "max": 60 },
+                            "abs_count": { "min": 30, "max": 45 },
+                            "plank_sec": { "min": 90, "max": 120 }
+                        },
+                        "variants": [
+                            {
+                                "variant_name": "一次性完成 (方案A)",
+                                "execution_mode": "circuit",
+                                "circuit_rounds": 3,
+                                "sessions": [
+                                    {
+                                        "session_label": "Main",
+                                        "exercises": [
+                                            { "name": "俯卧撑", "category": "push", "sets": 1, "reps": { "min": 10, "max": 12 }, "hold_sec": null, "rest_sec": 60 },
+                                            { "name": "卷腹", "category": "core", "sets": 1, "reps": { "min": 15, "max": 15 }, "hold_sec": null, "rest_sec": 30 },
+                                            { "name": "平板支撑", "category": "core_static", "sets": 1, "reps": null, "hold_sec": { "min": 30, "max": 40 }, "rest_sec": 30 }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "variant_name": "早晚拆分 (方案B)",
+                                "execution_mode": "split",
+                                "circuit_rounds": 1,
+                                "sessions": [
+                                    {
+                                        "session_label": "Morning",
+                                        "exercises": [
+                                            { "name": "俯卧撑", "category": "push", "sets": 2, "reps": { "min": 10, "max": 10 }, "hold_sec": null, "rest_sec": 60 },
+                                            { "name": "卷腹", "category": "core", "sets": 2, "reps": { "min": 15, "max": 15 }, "hold_sec": null, "rest_sec": 30 }
+                                        ]
+                                    },
+                                    {
+                                        "session_label": "Evening",
+                                        "exercises": [
+                                            { "name": "俯卧撑", "category": "push", "sets": 2, "reps": { "min": 10, "max": 10 }, "hold_sec": null, "rest_sec": 60 },
+                                         {
+                                            "name": "平板支撑",
+                                            "category": "core_static",
+                                            "sets": 3,
+                                            "reps": null,
+                                            "hold_sec": { "min": 40, "max": 60 },
+                                            "rest_sec": 30
+                                         }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "phase_id": 3,
+                "phase_name": "强化期",
+                "weeks": [6, 7, 8],
+                "description": "在不受伤的前提下接近最初的目标强度",
+                "schedule": {
+                    "frequency_days_per_week": 5,
+                    "rest_days_per_week": 2,
+                    "weekly_pattern_note": "周一/四间歇跑，周二/五持续跑，周三休息"
+                },
+                "daily_routine": {
+                    "aerobic": {
+                        "warmup": {
+                            "duration_min": 5,
+                            "content": "快走 + 简单动态拉伸"
+                        },
+                        "variants": [
+                            {
+                                "variant_name": "高强度间歇 (模式A)",
+                                "type": "interval",
+                                "description": "增加跑步时长比例",
+                                "params": {
+                                    "total_duration_min": { "min": 25, "max": 30 },
+                                    "interval_run_min": 3,
+                                    "interval_walk_min": 2,
+                                    "rounds": { "min": 5, "max": 6 },
+                                    "continuous_distance_km": null
+                                },
+                                "note": null
+                            },
+                            {
+                                "variant_name": "长距离慢跑 (模式B)",
+                                "type": "continuous",
+                                "description": "耐力训练",
+                                "params": {
+                                    "total_duration_min": null,
+                                    "interval_run_min": null,
+                                    "interval_walk_min": null,
+                                    "rounds": null,
+                                    "continuous_distance_km": { "min": 2.0, "max": 3.0 }
+                                },
+                                "note": "尽量连续跑完，中间可走路恢复"
+                            }
+                        ]
+                    },
+                    "strength": {
+                        "daily_targets": {
+                            "pushups_count": { "min": 60, "max": 100 },
+                            "abs_count": { "min": 45, "max": 80 },
+                            "plank_sec": { "min": 120, "max": 240 }
+                        },
+                        "variants": [
+                            {
+                                "variant_name": "一次性完成 (方案A)",
+                                "execution_mode": "circuit",
+                                "circuit_rounds": 3,
+                                "sessions": [
+                                    {
+                                        "session_label": "Main",
+                                        "exercises": [
+                                            { "name": "俯卧撑", "category": "push", "sets": 1, "reps": { "min": 15, "max": 20 }, "hold_sec": null, "rest_sec": 60 },
+                                            { "name": "卷腹", "category": "core", "sets": 1, "reps": { "min": 15, "max": 20 }, "hold_sec": null, "rest_sec": 30 },
+                                            { "name": "平板支撑", "category": "core_static", "sets": 1, "reps": null, "hold_sec": { "min": 40, "max": 60 }, "rest_sec": 30 }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "variant_name": "早晚拆分 (方案B)",
+                                "execution_mode": "split",
+                                "circuit_rounds": 1,
+                                "sessions": [
+                                    {
+                                        "session_label": "Morning",
+                                        "exercises": [
+                                            { "name": "俯卧撑", "category": "push", "sets": 3, "reps": { "min": 15, "max": 15 }, "hold_sec": null, "rest_sec": 60 },
+                                            { "name": "卷腹", "category": "core", "sets": 2, "reps": { "min": 20, "max": 20 }, "hold_sec": null, "rest_sec": 30 }
+                                        ]
+                                    },
+                                    {
+                                        "session_label": "Evening",
+                                        "exercises": [
+                                            { "name": "俯卧撑", "category": "push", "sets": 2, "reps": { "min": 15, "max": 15 }, "hold_sec": null, "rest_sec": 60 },
+                                            { "name": "平板支撑", "category": "core_static", "sets": 3, "reps": null, "hold_sec": { "min": 40, "max": 60 }, "rest_sec": 30 }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    };
+
+    // 2. Helper Functions
+    function formatRange(val, unit = '') {
+        if (val === null || val === undefined) return null;
+        if (typeof val === 'number') return `${val}${unit}`;
+        if (val.min === val.max) return `${val.min}${unit}`;
+        return `${val.min}-${val.max}${unit}`;
+    }
+
+    function renderHeader(overview) {
+        return `
+            <div class="plan-header">
+                <h1>${overview.title}</h1>
+                <div class="meta">创建于: ${overview.created_at}</div>
+            </div>
+        `;
+    }
+
+    function renderAerobic(aerobic) {
+        const variantsHtml = aerobic.variants.map(v => {
+            const params = v.params;
+            let paramsHtml = '';
+            if (params.total_duration_min) paramsHtml += `<div class="param-pill"><span>⏱</span> ${formatRange(params.total_duration_min, '分')}</div>`;
+            if (params.interval_run_min) paramsHtml += `<div class="param-pill"><span>🏃</span> 跑${params.interval_run_min}分</div>`;
+            if (params.interval_walk_min) paramsHtml += `<div class="param-pill"><span>🚶</span> 走${params.interval_walk_min}分</div>`;
+            if (params.rounds) paramsHtml += `<div class="param-pill"><span>🔄</span> ${formatRange(params.rounds, '组')}</div>`;
+            if (params.continuous_distance_km) paramsHtml += `<div class="param-pill"><span>📍</span> ${formatRange(params.continuous_distance_km, 'km')}</div>`;
+
+            return `
+                <div class="variant-item">
+                    <span class="variant-tag">${v.type === 'interval' ? '间歇跑' : '连续跑'}</span>
+                    <div class="variant-title">${v.variant_name}</div>
+                    <div class="variant-desc">${v.description}</div>
+                    <div class="params-list">${paramsHtml}</div>
+                    ${v.note ? `<div class="note-box">💡 ${v.note}</div>` : ''}
+                </div>
+            `;
+        }).join('');
+
+        return `
+            <div class="routine-card">
+                <div class="card-header">
+                    <div class="card-icon">❤️</div>
+                    <h3>有氧训练</h3>
+                </div>
+                <div class="warmup-box">
+                    <span class="warmup-title">🔥 热身 (${aerobic.warmup.duration_min}分钟)</span>
+                    <span class="warmup-content">${aerobic.warmup.content}</span>
+                </div>
+                <div class="variant-container">
+                    ${variantsHtml}
+                </div>
+            </div>
+        `;
+    }
+
+    function renderStrength(strength) {
+        const targets = strength.daily_targets;
+        const variantsHtml = strength.variants.map(v => {
+            const sessionsHtml = v.sessions.map(s => {
+                const exercisesHtml = s.exercises.map(ex => {
+                    const load = ex.reps ? `${formatRange(ex.reps)}次` : `${formatRange(ex.hold_sec)}秒`;
+                    return `
+                        <div class="exercise-row">
+                            <span class="ex-name">${ex.name}</span>
+                            <span class="ex-meta">${ex.sets}组 × ${load} (休${ex.rest_sec}s)</span>
+                        </div>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="session-block">
+                        <span class="session-label">${s.session_label === 'Main' ? '主训练' : s.session_label}</span>
+                        ${exercisesHtml}
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div class="variant-item">
+                    <span class="variant-tag">${v.execution_mode === 'circuit' ? '循环' : '分化'}</span>
+                    <div class="variant-title">${v.variant_name}</div>
+                    <div class="variant-desc">大循环: ${v.circuit_rounds} 轮</div>
+                    ${sessionsHtml}
+                </div>
+            `;
+        }).join('');
+
+        return `
+            <div class="routine-card">
+                <div class="card-header">
+                    <div class="card-icon">💪</div>
+                    <h3>力量训练</h3>
+                </div>
+                <div class="targets-grid">
+                    <div class="target-item"><span class="target-val">${formatRange(targets.pushups_count)}</span><span class="target-lbl">俯卧撑</span></div>
+                    <div class="target-item"><span class="target-val">${formatRange(targets.abs_count)}</span><span class="target-lbl">卷腹</span></div>
+                    <div class="target-item"><span class="target-val">${formatRange(targets.plank_sec)}s</span><span class="target-lbl">平板</span></div>
+                </div>
+                <div class="variant-container">
+                    ${variantsHtml}
+                </div>
+            </div>
+        `;
+    }
+
+    function renderPhases(phases) {
+        return phases.map((phase, index) => {
+            const isOpen = index === 0 ? 'open' : ''; // Open first phase by default
+            return `
+                <details class="phase-card" ${isOpen}>
+                    <summary>
+                        <div class="phase-header-content">
+                            <h2>
+                                <span class="badge badge-blue">Phase ${phase.phase_id}</span>
+                                ${phase.phase_name}
+                            </h2>
+                            <div class="phase-desc">${phase.description} (第 ${phase.weeks.join(',')} 周)</div>
+                        </div>
+                        <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="phase-body">
+                        <div class="section-title">日程安排</div>
+                        <div class="schedule-grid">
+                            <div class="stat-box">
+                                <div class="stat-value">${phase.schedule.frequency_days_per_week}</div>
+                                <div class="stat-label">训练天数/周</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">${phase.schedule.rest_days_per_week}</div>
+                                <div class="stat-label">休息天数/周</div>
+                            </div>
+                            <div class="stat-note">📅 ${phase.schedule.weekly_pattern_note}</div>
+                        </div>
+
+                        <div class="section-title">每日训练内容</div>
+                        <div class="routine-container">
+                            ${renderAerobic(phase.daily_routine.aerobic)}
+                            ${renderStrength(phase.daily_routine.strength)}
+                        </div>
+                    </div>
+                </details>
+            `;
+        }).join('');
+    }
+
+    // 3. Main Render
+    const app = document.getElementById('app');
+    app.innerHTML = `
+        ${renderHeader(data.plan_overview)}
+        ${renderPhases(data.phases)}
+    `;
+
+</script>
+</body>
+</html>

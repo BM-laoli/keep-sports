@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>8周进阶训练计划 - 移动端视图</title>
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #EEF2FF;
+            --text-main: #1F2937;
+            --text-sub: #6B7280;
+            --bg-color: #F3F4F6;
+            --card-bg: #FFFFFF;
+            --accent-orange: #F59E0B;
+            --accent-orange-light: #FFF7ED;
+            --accent-orange-text: #9A3412;
+            --accent-green: #10B981;
+            --accent-green-light: #ECFDF5;
+            --accent-green-text: #065F46;
+            
+            /* 移动端圆角与阴影优化 */
+            --radius-lg: 20px;
+            --radius-md: 16px;
+            --radius-sm: 8px;
+            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 20px 16px; /* 移动端边距 */
+            max-width: 600px;   /* 限制最大宽度模拟手机 */
+            margin: 0 auto;
+        }
+
+        /* 头部 */
+        .plan-header {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .plan-header h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            letter-spacing: -0.025em;
+        }
+        .plan-header .meta {
+            color: var(--text-sub);
+            font-size: 0.8rem;
+            background: white;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* 阶段卡片 (折叠面板) */
+        details.phase-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.5);
+            transition: all 0.3s ease;
+        }
+
+        details.phase-card[open] {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        summary {
+            list-style: none;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            position: relative;
+        }
+        summary::-webkit-details-marker { display: none; }
+
+        .phase-header-content h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .badge {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 99px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .badge-blue { background: var(--primary-light); color: var(--primary); }
+        
+        .phase-desc {
+            color: var(--text-sub);
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .chevron {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease;
+            color: var(--text-sub);
+            flex-shrink: 0;
+        }
+        details[open] .chevron { transform: rotate(180deg); }
+
+        .phase-body {
+            padding: 0 20px 24px 20px;
+            border-top: 1px solid #F3F4F6;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-sub);
+            font-weight: 700;
+            margin: 24px 0 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #E5E7EB;
+        }
+
+        /* 日程网格 */
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .stat-box {
+            background: #F9FAFB;
+            padding: 12px;
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        .stat-value { font-size: 1.25rem; font-weight: 800; color: var(--text-main); }
+        .stat-label { font-size: 0.75rem; color: var(--text-sub); margin-top: 2px; }
+        .stat-note { 
+            grid-column: 1 / -1; 
+            font-size: 0.85rem; 
+            color: var(--primary); 
+            background: var(--primary-light); 
+            padding: 10px; 
+            border-radius: var(--radius-sm); 
+            text-align: center;
+        }
+
+        /* 核心布局修改：垂直堆叠 */
+        .routine-container {
+            display: flex;
+            flex-direction: column; /* 关键：垂直布局 */
+            gap: 20px;
+        }
+
+        .routine-card {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .card-header h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .card-icon {
+            width: 28px;
+            height: 28px;
+            background: var(--primary-light);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        /* 热身模块 */
+        .warmup-box {
+            background: var(--accent-orange-light);
+            border-left: 3px solid var(--accent-orange);
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            font-size: 0.85rem;
+        }
+        .warmup-title { font-weight: 700; color: var(--accent-orange-text); margin-bottom: 4px; display: block; }
+        .warmup-content { color: var(--accent-orange-text); }
+
+        /* 目标网格 */
+        .targets-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .target-item {
+            background: var(--accent-green-light);
+            padding: 10px 4px;
+            border-radius: var(--radius-sm);
+            text-align: center;
+        }
+        .target-val { font-weight: 700; color: var(--accent-green-text); display: block; font-size: 0.95rem; }
+        .target-lbl { font-size: 0.7rem; color: #047857; margin-top: 2px; }
+
+        /* 变体列表 */
+        .variant-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .variant-item {
+            background: #F9FAFB;
+            border: 1px solid #F3F4F6;
+            border-radius: var(--radius-md);
+            padding: 16px;
+            position: relative;
+        }
+        
+        .variant-tag {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: #E5E7EB;
+            color: var(--text-sub);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .variant-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+            padding-right: 50px;
+        }
+        .variant-desc {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            margin-bottom: 10px;
+        }
+
+        .params-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .param-pill {
+            font-size: 0.75rem;
+            background: white;
+            border: 1px solid #E5E7EB;
+            padding: 3px 8px;
+            border-radius: 12px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .param-pill span { font-weight: 600; color: var(--primary); }
+
+        .note-box {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            font-style: italic;
+            border-top: 1px dashed #E5E7EB;
+            padding-top: 6px;
+            margin-top: 6px;
+        }
+
+        .session-block {
+            margin-top: 10px;
+        }
+        .session-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .exercise-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid #E5E7EB;
+            font-size: 0.85rem;
+        }
+        .exercise-row:last-child { border-bottom: none; }
+        .ex-name { font-weight: 600; }
+        .ex-meta { color: var(--text-sub); font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <div class="plan-header">
+        <h1>8周进阶训练计划</h1>
+        <div class="meta">创建于: 2025-11-26</div>
+    </div>
+
+    <!-- Phase 1: 新手适应期 -->
+    <details class="phase-card" open>
+        <summary>
+            <div class="phase-header-content">
+                <h2>
+                    <span class="badge badge-blue">Phase 1</span>
+                    新手适应期
+                </h2>
+                <div class="phase-desc">建立习惯，保护关节 (第 1,2 周)</div>
+            </div>
+            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </summary>
+        <div class="phase-body">
+            <div class="section-title">日程安排</div>
+            <div class="schedule-grid">
+                <div class="stat-box">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">训练天数/周</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">休息天数/周</div>
+                </div>
+                <div class="stat-note">📅 建议周三和周末休息</div>
+            </div>
+
+            <div class="section-title">每日训练内容</div>
+            <div class="routine-container">
+                
+                <!-- Aerobic Card -->
+                <div class="routine-card">
+                    <div class="card-header">
+                        <div class="card-icon">❤️</div>
+                        <h3>有氧训练</h3>
+                    </div>
+                    <div class="warmup-box">
+                        <span class="warmup-title">🔥 热身 (5分钟)</span>
+                        <span class="warmup-content">快走 or 原地踏步 + 轻度关节活动</span>
+                    </div>
+                    <div class="variant-container">
+                        <div class="variant-item">
+                            <span class="variant-tag">间歇跑</span>
+                            <div class="variant-title">基础慢跑交替</div>
+                            <div class="variant-desc">小碎步慢跑与快走交替</div>
+                            <div class="params-list">
+                                <div class="param-pill"><span>⏱</span> 20-25分</div>
+                                <div class="param-pill"><span>🏃</span> 跑1分</div>
+                                <div class="param-pill"><span>🚶</span> 走2分</div>
+                                <div class="param-pill"><span>🔄</span> 6-8组</div>
+                            </div>
+                            <div class="note-box">💡 如果1分钟跑太吃力，改为跑0.5分钟+走2.5分钟</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strength Card -->
+                <div class="routine-card">
+                    <div class="card-header">
+                        <div class="card-icon">💪</div>
+                        <h3>力量训练</h3>
+                    </div>
+                    <div class="targets-grid">
+                        <div class="target-item">
+                            <span class="target-val">12-16</span>
+                            <span class="target-lbl">俯卧撑</span>
+                        </div>
+                        <div class="target-item">
+                            <span class="target-val">24-30</span>
+                            <span class="target-lbl">卷腹</span>
+                        </div>
+                        <div class="target-item">
+                            <span class="target-val">40-60s</span>
+                            <span class="target-lbl">平板</span>
+                        </div>
+                    </div>
+                    <div class="variant-container">
+                        <div class="variant-item">
+                            <span class="variant-tag">循环</span>
+                            <div class="variant-title">标准循环训练</div>
+                            <div class="variant-desc">大循环: 2 轮</div>
+                            <div class="session-block">
+                                <span class="session-label">主训练</span>
+                                <div class="exercise-row">
+                                    <span class="ex-name">俯卧撑</span>
+                                    <span class="ex-meta">1组 × 6-8次 (休60s)</span>
+                                </div>
+                                <div class="exercise-row">
+                                    <span class="ex-name">卷腹</span>
+                                    <span class="ex-meta">1组 × 12-15次 (休30s)</span>
+                                </div>
+                                <div class="exercise-row">
+                                    <span class="ex-name">平板支撑</span>
+                                    <span class="ex-meta">1组 × 20-30秒 (休30s)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </details>
+
+    <!-- Phase 2: 提高期 -->
+    <details class="phase-card">
+        <summary>
+            <div class="phase-header-content">
+                <h2>
+                    <span class="badge badge-blue">Phase 2</span>
+                    提高期
+                </h2>
+                <div class="phase-desc">逐步增加强度 (第 3,4 周)</div>
+            </div>
+            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </summary>
+        <div class="phase-body">
+            <div class="section-title">日程安排</div>
+            <div class="schedule-grid">
+                <div class="stat-box">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">训练天数/周</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">休息天数/周</div>
+                </div>
+                <div class="stat-note">📅 有氧模式可根据体能二选一</div>
+            </div>
+
+            <div class="section-title">每日训练内容</div>
+            <div class="routine-container">
+                <!-- Aerobic -->
+                <div class="routine-card">
+                    <div class="card-header"><div class="card-icon">❤️</div><h3>有氧训练</h3></div>
+                    <div class="warmup-box">
+                        <span class="warmup-title">🔥 热身 (5分钟)</span>
+                        <span class="warmup-content">快速走路 + 关节活动</span>
+                    </div>
+                    <div class="variant-container">
+                        <div class="variant-item">
+                            <span class="variant-tag">间歇跑</span>
+                            <div class="variant-title">进阶交替跑 (模式A)</div>
+                            <div class="params-list">
+                                <div class="param-pill"><span>⏱</span> 25-30分</div>
+                                <div class="param-pill"><span>🏃</span> 跑2分</div>
+                                <div class="param-pill"><span>🚶</span> 走2分</div>
+                            </div>
+                        </div>
+                        <div class="variant-item">
+                            <span class="variant-tag">连续跑</span>
+                            <div class="variant-title">连续慢跑尝试 (模式B)</div>
+                            <div class="params-list">
+                                <div class="param-pill"><span>📍</span> 1.5-2.0km</div>
+                            </div>
+                            <div class="note-box">💡 速度放慢，能坚持为主</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Strength -->
+                <div class="routine-card">
+                    <div class="card-header"><div class="card-icon">💪</div><h3>力量训练</h3></div>
+                    <div class="targets-grid">
+                        <div class="target-item"><span class="target-val">40-60</span><span class="target-lbl">俯卧撑</span></div>
+                        <div class="target-item"><span class="target-val">30-45</span><span class="target-lbl">卷腹</span></div>
+                        <div class="target-item"><span class="target-val">90-120s</span><span class="target-lbl">平板</span></div>
+                    </div>
+                    <div class="variant-container">
+                        <div class="variant-item">
+                            <span class="variant-tag">循环</span>
+                            <div class="variant-title">一次性完成 (方案A)</div>
+                            <div class="variant-desc">大循环: 3 轮</div>
+                            <div class="session-block">
+                                <div class="exercise-row"><span class="ex-name">俯卧撑</span><span class="ex-meta">1组 × 10-12次</span></div>
+                                <div class="exercise-row"><span class="ex-name">卷腹</span><span class="ex-meta">1组 × 15次</span></div>
+                                <div class="exercise-row"><span class="ex-name">平板</span><span class="ex-meta">1组 × 30-40秒</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </details>
+
+    <!-- Phase 3: 强化期 -->
+    <details class="phase-card">
+        <summary>
+            <div class="phase-header-content">
+                <h2>
+                    <span class="badge badge-blue">Phase 3</span>
+                    强化期
+                </h2>
+                <div class="phase-desc">接近目标强度 (第 6,7,8 周)</div>
+            </div>
+            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecapround" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </summary>
+        <div class="phase-body">
+            <div class="section-title">日程安排</div>
+            <div class="schedule-grid">
+                <div class="stat-box">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">训练天数/周</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">休息天数/周</div>
+                </div>
+                <div class="stat-note">📅 周一/四间歇跑，周二/五持续跑</div>
+            </div>
+
+            <div class="section-title">每日训练内容</div>
+            <div class="routine-container">
+                <!-- Aerobic -->
+                <div class="routine-card">
+                    <div class="card-header"><div class="card-icon">❤️</div><h3>有氧训练</h3></div>
+                    <div class="warmup-box">
+                        <span class="warmup-title">🔥 热身 (5分钟)</span>
+                        <span class="warmup-content">快走 + 简单动态拉伸</span>
+                    </div>
+                    <div class="variant-container">
+                        <div class="variant-item">
+                            <span class="variant-tag">间歇跑</span>
+                            <div class="variant-title">高强度间歇 (模式A)</div>
+                            <div class="params-list">
+                                <div class="param-pill"><span>⏱</span> 25-30分</div>
+                                <div class="param-pill"><span>🏃</span> 跑3分</div>
+                                <div class="param-pill"><span>🚶</span> 走2分</div>
+                                <div class="param-pill"><span>🔄</span> 5-6组</div>
+                            </div>
+                        </div>
+                        <div class="variant-item">
+                            <span class="variant-tag">连续跑</span>
+                            <div class="variant-title">长距离慢跑 (模式B)</div>
+                            <div class="params-list">
+                                <div class="param-pill"><span>📍</span> 2.0-3.0km</div>
+                            </div>
+                            <div class="note-box">💡 尽量连续跑完，中间可走路恢复</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strength -->
+                <div class="routine-card">
+                    <div class="card-header"><div class="card-icon">💪</div><h3>力量训练</h3></div>
+                    <div class="targets-grid">
+                        <div class="target-item"><span class="target-val">60-100</span><span class="target-lbl">俯卧撑</span></div>
+                        <div class="target-item"><span class="target-val">45-80</span><span class="target-lbl">卷腹</span></div>
+                        <div class="target-item"><span class="target-val">120-240s</span><span class="target-lbl">平板</span></div>
+                    </div>
+                    <div class="variant-container">
+                        <div class="variant-item">
+                            <span class="variant-tag">循环</span>
+                            <div class="variant-title">一次性完成 (方案A)</div>
+                            <div class="variant-desc">大循环: 3 轮</div>
+                            <div class="session-block">
+                                <div class="exercise-row"><span class="ex-name">俯卧撑</span><span class="ex-meta">1组 × 15-20次</span></div>
+                                <div class="exercise-row"><span class="ex-name">卷腹</span><span class="ex-meta">1组 × 15-20次</span></div>
+                                <div class="exercise-row"><span class="ex-name">平板</span><span class="ex-meta">1组 × 40-60秒</span></div>
+                            </div>
+                        </div>
+                        <div class="variant-item">
+                            <span class="variant-tag">分化</span>
+                            <div class="variant-title">早晚拆分 (方案B)</div>
+                            <div class="variant-desc">早晚各练</div>
+                            <div class="session-block">
+                                <span class="session-label">Morning</span>
+                                <div class="exercise-row"><span class="ex-name">俯卧撑</span><span class="ex-meta">3组 × 15次</span></div>
+                                <div class="exercise-row"><span class="ex-name">卷腹</span><span class="ex-meta">2组 × 20次</span></div>
+                            </div>
+                            <div class="session-block">
+                                <span class="session-label">Evening</span>
+                                <div class="exercise-row"><span class="ex-name">俯卧撑</span><span class="ex-meta">2组 × 15次</span></div>
+                                <div class="exercise-row"><span class="ex-name">平板</span><span class="ex-meta">3组 × 40-60秒</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </details>
+
+</body>
+</html>

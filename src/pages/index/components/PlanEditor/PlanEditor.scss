@@ -1,0 +1,164 @@
+/* 基础变量 */
+$primary-color: #3b82f6;
+$danger-color: #ef4444;
+$success-color: #10b981;
+$text-main: #1f2937;
+$text-sub: #6b7280;
+$border-color: #e5e7eb;
+$bg-page: #f3f4f6;
+$bg-card: #ffffff;
+
+.plan-editor-container {
+  min-height: 100vh;
+  background-color: $bg-page;
+  padding: 20px;
+  box-sizing: border-box;
+  padding-bottom: 100px; /* 为底部按钮留出空间 */
+}
+
+/* 通用卡片样式 */
+.card {
+  background-color: $bg-card;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+
+  &.sub-card {
+    background-color: #f9fafb;
+    border: 1px solid $border-color;
+    padding: 16px;
+    border-radius: 12px;
+  }
+}
+
+/* 标题与文本 */
+.page-title {
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+  color: $text-main;
+  margin-bottom: 30px;
+  display: block;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid $border-color;
+  padding-bottom: 10px;
+
+  .title {
+    font-size: 32px;
+    font-weight: bold;
+    color: $text-main;
+  }
+}
+
+.sub-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: $text-main;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.label {
+  font-size: 24px;
+  color: $text-sub;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* 表单控件 */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.input {
+  width: 100%;
+  height: 80px;
+  line-height: 80px;
+  background-color: #fff;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  padding: 0 20px;
+  font-size: 28px;
+  box-sizing: border-box;
+  color: $text-main;
+
+  &:focus {
+    border-color: $primary-color;
+  }
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+
+  .col {
+    flex: 1;
+  }
+  
+  .separator {
+    color: $text-sub;
+  }
+}
+
+/* 按钮样式 */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 32px;
+  border-radius: 8px;
+  font-size: 28px;
+  margin-top: 16px;
+  border: none;
+  
+  &.btn-primary {
+    background-color: $primary-color;
+    color: white;
+  }
+
+  &.btn-success {
+    background-color: $success-color;
+    color: white;
+  }
+
+  &.btn-outline {
+    background-color: transparent;
+    border: 1px solid $primary-color;
+    color: $primary-color;
+  }
+
+  &.btn-danger-text {
+    background-color: rgba($danger-color, 0.1);
+    color: $danger-color;
+    font-size: 24px;
+    padding: 8px 16px;
+    margin-top: 0;
+  }
+  
+  &.btn-block {
+    width: 100%;
+  }
+}
+
+/* 底部固定操作栏 */
+.footer-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+  display: flex;
+  gap: 20px;
+  z-index: 100;
+}

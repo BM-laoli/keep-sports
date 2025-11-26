@@ -1,0 +1,79 @@
+/* 颜色变量：GitHub 亮色主题 */
+$color-level-0: #ebedf0;
+$color-level-1: #9be9a8;
+$color-level-2: #40c463;
+$color-level-3: #30a14e;
+$color-level-4: #216e39;
+$text-color: #767676;
+
+.heatmap-wrapper {
+  display: flex;
+  flex-direction: row;
+  background: #fff;
+  padding: 20rpx; /* 增加内边距 */
+  border-radius: 12rpx;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.heatmap-y-axis {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0; /* 防止被压缩 */
+  
+  .y-axis-placeholder {
+    height: 30rpx; /* 对应月份标签的高度 */
+    margin-bottom: 8rpx;
+  }
+
+  .week-label {
+    font-size: 20rpx; /* 字体调大 */
+    color: $text-color;
+    text-align: left;
+  }
+}
+
+.heatmap-scroll {
+  flex: 1;
+  width: 100%;
+  /* 关键：让 ScrollView 内部内容可以撑开 */
+  display: flex; 
+}
+
+.heatmap-grid {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 10rpx;
+  min-width: 100%; /* 保证至少占满容器 */
+  
+  /* 如果 align='center'，内容居中 */
+  &.grid-center {
+    justify-content: center;
+  }
+}
+
+.heatmap-column {
+  display:flex;
+  flex-direction: column;
+}
+
+.month-label {
+  height: 30rpx; /* 对应 y-axis-placeholder 的高度 */
+  font-size: 20rpx;
+  color: $text-color;
+  margin-bottom: 8rpx;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.heatmap-cell {
+  /* 宽高由行内样式控制 */
+  border-radius: 4rpx;
+  background-color: $color-level-0;
+  
+  &.level-1 { background-color: $color-level-1; }
+  &.level-2 { background-color: $color-level-2; }
+  &.level-3 { background-color: $color-level-3; }
+  &.level-4 { background-color: $color-level-4; }
+}
