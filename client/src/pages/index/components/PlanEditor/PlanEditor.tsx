@@ -9,6 +9,7 @@ import {
 } from 'src/core/constants/data'; // 请确保路径正确
 
 import './PlanEditor.scss'; // 引入样式文件
+import { usePlan } from 'src/core/business/mine/usePlane';
 
 // 1. 工具函数：创建默认空数据
 
@@ -313,10 +314,12 @@ export function PlanEditor() {
     plan_overview: { title: '我的新计划', created_at: new Date().toISOString() },
     phases: [createEmptyPhase(1)]
   });
+  const {createNewPlan} = usePlan()
 
   const handleSave = () => {
-    console.log('最终生成的 JSON 数据:', JSON.stringify(plan, null, 2));
+    // console.log('最终生成的 JSON 数据:', JSON.stringify(plan, null, 2));
     // Taro.showToast({ title: '保存成功(看控制台)', icon: 'success' });
+    createNewPlan(plan)
   };
 
   return (

@@ -1,0 +1,95 @@
+/* 变量定义：Dribbble 风格配色 */
+$primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+$success-gradient: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+$card-bg: #ffffff;
+$bg-page: #f8f9fd;
+$text-main: #2d3748;
+$text-sub: #718096;
+$shadow-float: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+$shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+$radius-lg: 24px;
+$radius-md: 16px;
+$radius-sm: 8px;
+
+.stats-container {
+//   min-height: 100vh;
+  background-color: $bg-page;
+  padding: 30px;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* 通用卡片 */
+.card {
+  background: $card-bg;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-float;
+  padding: 30px;
+  margin-bottom: 30px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+
+  &:active {
+    transform: scale(0.99);
+  }
+}
+
+/* 1. 头部概览区域 */
+.header-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  .welcome-text {
+    font-size: 28px;
+    color: $text-sub;
+    margin-bottom: 10px;
+  }
+
+  .days-count {
+    font-size: 80px;
+    font-weight: 800;
+    color: transparent;
+    background: $primary-gradient;
+    -webkit-background-clip: text;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  .days-label {
+    font-size: 24px;
+    color: $text-sub;
+    font-weight: 500;
+  }
+}
+
+/* 打卡按钮 */
+.checkin-btn {
+  margin-top: 30px;
+  width: 100%;
+  height: 100px;
+  border-radius: $radius-md;
+  background: $primary-gradient;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(118, 75, 162, 0.4);
+  color: white;
+  font-size: 32px;
+  font-weight: bold;
+  border: none;
+  transition: all 0.3s ease;
+
+  &.checked {
+    background: $success-gradient;
+    box-shadow: 0 4px 15px rgba(132, 250, 176, 0.4);
+    color: #2d3748;
+  }
+
+  .icon {
+    margin-right: 10px;
+  }
+}

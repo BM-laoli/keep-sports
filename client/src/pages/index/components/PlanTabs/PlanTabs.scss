@@ -1,0 +1,86 @@
+/* 变量定义 (假设) */
+$primary: #6c5ce7;
+$text-sub: #b2bec3;
+$text-main: #2d3436;
+
+.plan-tabs-wrapper {
+  width: 100%;
+  background: #FFFFFF;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+  // 确保容器本身不溢出
+  overflow: hidden; 
+}
+
+.plan-tabs-scroll {
+  width: 100%;
+  white-space: nowrap; // 关键：防止 ScrollView 内部换行
+  height: 90px; // 给定一个高度，防止高度塌陷
+}
+
+// 隐藏滚动条 (针对 Web/H5，小程序通常有配置)
+.plan-tabs-scroll ::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+  color: transparent;
+}
+
+.plan-tabs-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px; // 容器整体的左右内边距
+  box-sizing: border-box;
+}
+
+.tab-item {
+  // 关键改动：
+  // 1. flex: 1 改为 flex-shrink: 0，防止被压缩
+  // 2. 不设固定宽度，由内容撑开
+  flex-shrink: 0; 
+  display: inline-flex; // 或者 flex
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  padding: 0 30px; // 左右留白，增加点击区域和视觉间隔
+  height: 100%;
+  position: relative;
+  transition: all 0.3s;
+
+  .tab-text {
+    font-size: 28px;
+    color: $text-sub;
+    font-weight: 500;
+    line-height: 1; // 防止文字行高导致的对齐问题
+    white-space: nowrap; // 确保文字本身不换行
+  }
+
+  &.active {
+    .tab-text {
+      color: $primary;
+      font-weight: 700;
+      font-size: 32px; // 选中稍微大一点点
+      transform: scale(1.05); // 使用 transform 放大比改 font-size 性能更好且无抖动
+    }
+  }
+
+  .active-line {
+    position: absolute;
+    bottom: 10px; // 稍微离底边一点距离
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 6px;
+    background-color: $primary;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba($primary, 0.4); // 加一点阴影更有质感
+  }
+}
+
+// 右侧占位符，让最后一个元素能滚出来一点，不贴边
+.tab-spacer {
+  flex-shrink: 0;
+  width: 20px;
+  height: 1px;
+}

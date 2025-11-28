@@ -1,0 +1,157 @@
+$primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+$text-main: #2d3748;
+$text-sub: #a0aec0;
+$bg-track: #e2e8f0; 
+// 2. 调整成功色：不再用粉嫩的浅绿，改用高饱和度的翠绿+深蓝渐变
+// 之前的 #84fab0 太淡了，现在的颜色更“实”
+$success-gradient: linear-gradient(135deg, #42e695 0%, #3bb2b8 100%);
+
+.chart-card {
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+
+  .chart-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: $text-main;
+    display: block;
+  }
+  
+  .chart-subtitle {
+      font-size: 22px;
+      color: $text-sub;
+      margin-top: 6px;
+      display: block;
+  }
+}
+
+.toggle-switch {
+  display: flex;
+  background-color: #f7fafc;
+  padding: 6px;
+  border-radius: 12px;
+
+  .toggle-item {
+    padding: 10px 24px;
+    font-size: 24px;
+    color: $text-sub;
+    border-radius: 8px;
+    transition: all 0.3s;
+
+    &.active {
+      background-color: #fff;
+      color: $text-main;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+  }
+}
+
+.chart-content {
+    min-height: 300px; // 保持高度一致，防止切换时抖动
+    display: flex;
+    align-items: center;
+}
+
+/* --- 热力图样式 --- */
+.heatmap-scroll {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.heatmap-container {
+    padding-right: 20px; // 给右边留点空隙
+    display: inline-block;
+}
+
+.heatmap-grid {
+  display: inline-grid;
+  grid-template-rows: repeat(7, 1fr); /* 7行 */
+  grid-auto-flow: column; /* 关键：按列填充 */
+  gap: 8px; 
+  
+  .heatmap-cell {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background-color: $bg-track;
+    transition: all 0.3s;
+
+    &.active {
+      background: $success-gradient;
+      box-shadow: 0 2px 6px rgba(132, 250, 176, 0.4);
+    }
+  }
+  
+  // 3. (可选) 给未完成的状态也加一点内阴影，增加立体感，区分度更高
+.heatmap-cell, .bar-track {
+    // ... 原有属性
+    background-color: $bg-track;
+    // 新增：内阴影让未完成的状态看起来是“凹”进去的
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.06); 
+  }
+}
+
+/* --- 柱状图样式 (周视图) --- */
+.bar-chart {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 280px;
+}
+
+.bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+  justify-content: flex-end;
+  
+  &.today {
+      .bar-label {
+          color: #667eea;
+          font-weight: bold;
+      }
+      .bar-track {
+          background-color: rgba(102, 126, 234, 0.1);
+      }
+  }
+
+  .bar-track {
+      width: 16px; // 柱子细一点更精致
+      height: 80%; // 柱状图区域高度
+      background-color: $bg-track;
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 16px;
+  }
+  
+  .bar-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: $primary-gradient;
+    border-radius: 20px;
+    transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .bar-label {
+    font-size: 22px;
+    color: $text-sub;
+    font-family: monospace; // 等宽字体对齐更好看
+  }
+}
