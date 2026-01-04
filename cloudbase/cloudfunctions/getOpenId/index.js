@@ -1,13 +1,12 @@
 const cloud = require("wx-server-sdk");
 const lodash = require("lodash");
-
-// 初始化
 cloud.init({
     env: "keep-sport-5gn0lvxn1a592b35",
 });
 const db = cloud.database();
 const _ = db.command; // 引入数据库操作符
 const COL_PLANE = "training-plane";
+const PKNewCheck= require('./src/check')
 
 class Res {
   static CodeEnum = { SUCCESS: 200, ERROR: 500 };
@@ -90,7 +89,7 @@ const updateUserInfo = async (event) => {
  *   "data": {
  *      "dateStr": "2025-05-20", // 必填：前端根据时区生成的日期字符串
  *      "duration": 45,          // 必填：时长/数值
- *      "comment": "状态不错"
+ *      "comment": "状态不错"，
  *   }
  * }
  */
@@ -266,7 +265,8 @@ const createPlan = async (event, context) => {
    */
   const updatePlan = async (event, context) => {
     const { openid } = await getOpenid();
-    const { planId, payload } = event.data;
+    const { _id : planId,  } = event.data;
+    const payload = event.data
   
     if (!planId) return Res.err("缺少 planId");
     if (!payload) return Res.err("缺少更新数据 payload");
@@ -329,12 +329,18 @@ const EVENT_MAP = {
   // 打卡相关
   ADD_CHECK_IN: addCheckIn,      // 新增/更新打卡
   GET_CHECK_IN_LIST: getCheckInList, // 获取列表
+  PK_SET_CONFIG: PKNewCheck.setConfig,
+  PK_GET_CONFIG: PKNewCheck.getConfig,
+  PK_ADD_LOG: PKNewCheck.addLog,
+  PK_GET_TODAY_PROGRESS: PKNewCheck.getTodayProgress,
 
+  //训练计划相关
   CREATE_PLAN: createPlan,        // 创建新计划
   GET_PLAN_LIST: getPlanList,     // 获取我的计划列表
   GET_PLAN_DETAIL: getPlanDetail, // 获取单个计划详情
   UPDATE_PLAN: updatePlan,        // 更新计划
   DELETE_PLAN: deletePlan,        // 删除计划
+
 };
 
 exports.main = async (event, context) => {
