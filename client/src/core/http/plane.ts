@@ -58,7 +58,7 @@ const deletePlan = async (id: string) => {
     data: {
       type: "DELETE_PLAN",
       data: {
-        _id: id,
+        planId: id,
       },
     },
   });

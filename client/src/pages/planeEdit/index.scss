@@ -1,0 +1,14 @@
+@import "~taro-ui/dist/style/components/tab-bar.scss";
+@import "~taro-ui/dist/style/components/badge.scss";
+@import "~taro-ui/dist/style/components/icon.scss";
+
+// main
+.page {
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+.page-container {
+    height: 90vh;
+  }

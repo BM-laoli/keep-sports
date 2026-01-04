@@ -1,4 +1,4 @@
-import { View,Text } from "@tarojs/components";
+import { View,Text,ScrollView, Button } from "@tarojs/components";
 import { CSSProperties, useEffect, useMemo, useState } from "react";
 import { transformJsonToUiData } from "src/core/utils/planAdapter";
 import { PlanEditor } from "./PlanEditor/PlanEditor";
@@ -6,6 +6,9 @@ import { usePlan } from "src/core/business/mine/usePlane";
 import { useUser } from "src/core/business/mine";
 import { PlanTabs } from "./PlanTabs/PlanTabs";
 
+import './HomeActive.scss'
+import dayjs from "dayjs";
+import Taro from "@tarojs/taro";
 interface Exercise {
   name: string;
   meta: string;
@@ -210,6 +213,8 @@ const HomeActive = () => {
     tabs,
     currentUIPlan: currentPlan,
     initPlans,
+    deleteCurrentPlan,
+    jump2Edit
   } = usePlan();
   const { userInfo } = useUser();
 
@@ -220,9 +225,9 @@ const HomeActive = () => {
   }, [userInfo._openid]);
 
   return (
-    <View className="training-plan-page">
+    <View className="training-plan-page-home">
       {/* 1. 顶部固定 Tabs */}
-      <View className="sticky-header">
+      <View className="sticky-header-x">
         <PlanTabs
           tabs={tabs}
           activeKey={activePlanId}
@@ -230,28 +235,45 @@ const HomeActive = () => {
         />
       </View>
 
-      {/* 2. 计划标题信息 */}
-      <View className="plan-header">
-        <View className="main-title">{currentPlan?.meta?.title}</View>
-        <View className="meta">创建于: {currentPlan?.meta?.date}</View>
-      </View>
+      <ScrollView scrollY className="page-content-container">
+        {/* 2. 计划标题信息 */}
+            <View className="plan-header">
+              <View className="main-title">{currentPlan?.meta?.title}</View>
+              {(activePlanId != '00011' && activePlanId != '00001' ) && (
+                <>
+                <View className="meta">创建于: { dayjs(currentPlan?.meta?.date).format('YYYY-MM-DD') }</View>
+                {/* 删除和编辑按钮 */}
+                <View className="action-container">
+                  <Button className="btn btn-success" onClick={() => {
+                    
+                    jump2Edit(activePlanId)
+                    
+                  }}>编辑</Button>
+                  <Button className="btn btn-primary" onClick={deleteCurrentPlan}>删除</Button>
+                </View>
+                </>
+              )}
+              
+            </View>
 
-      {/* 3. 计划列表内容 */}
-      <View className="plan-content">
-        {Number(currentPlan?.phases?.length) > 0 ? (
-          currentPlan?.phases?.map((phase) => (
-            // 这里使用之前定义的 PhaseCard 组件
-            <PhaseCard key={phase.id} phase={phase} />
-          ))
-        ) : (
-          // 空状态展示
-          // <View className="empty-state">
-          //   <View className="empty-icon">📝</View>
-          //   <View className="empty-text">暂无自定义计划，去创建一个吧！(施工中)</View>
-          // </View>
-          <PlanEditor></PlanEditor> // 最好还是单独一个页面好啦 很强大
-        )}
-      </View>
+            {/* 3. 计划列表内容 */}
+            <View className="plan-content">
+              {Number(currentPlan?.phases?.length) > 0 ? (
+                currentPlan?.phases?.map((phase) => (
+                  // 这里使用之前定义的 PhaseCard 组件
+                  <PhaseCard key={phase.id} phase={phase} />
+                ))
+              ) : (
+                // 空状态展示
+                // <View className="empty-state">
+                //   <View className="empty-icon">📝</View>
+                //   <View className="empty-text">暂无自定义计划，去创建一个吧！(施工中)</View>
+                // </View>
+                <PlanEditor></PlanEditor> // 最好还是单独一个页面好啦 很强大
+              )}
+            </View>
+      </ScrollView>
+
     </View>
   );
 };

@@ -1,0 +1,79 @@
+$bg-color: #F3F4F6;
+
+/* 基础变量 */
+$primary-color: #3b82f6;
+$danger-color: #ef4444;
+$success-color: #10b981;
+$text-main: #1f2937;
+$text-sub: #6b7280;
+$border-color: #e5e7eb;
+$bg-page: #f3f4f6;
+$bg-card: #ffffff;
+
+.training-plan-page-home {
+    display: flex;
+    height: 90vh;
+    width: 100vw;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.sticky-header {
+    flex-shrink: 0; // 防止被挤压
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: $bg-color; // 防止透明背景导致内容重叠
+    padding-bottom: 20px; // 给下方内容一点呼吸空间
+}
+
+.page-content-container {
+  height: 80vh;
+}
+
+.action-container {
+  width: 250px;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 32px;
+    border-radius: 8px;
+    font-size: 24px;
+    margin-top: 16px;
+    border: none;
+    
+    &.btn-primary {
+      background-color: $primary-color;
+      color: white;
+    }
+
+    &.btn-success {
+      background-color: $success-color;
+      color: white;
+    }
+
+    &.btn-outline {
+      background-color: transparent;
+      border: 1px solid $primary-color;
+      color: $primary-color;
+    }
+
+    &.btn-danger-text {
+      background-color: rgba($danger-color, 0.1);
+      color: $danger-color;
+      font-size: 24px;
+      padding: 8px 16px;
+      margin-top: 0;
+    }
+    
+    &.btn-block {
+      width: 80px;
+    }
+  }
+}
+

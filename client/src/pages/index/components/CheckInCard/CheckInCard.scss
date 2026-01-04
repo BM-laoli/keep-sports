@@ -1,0 +1,261 @@
+/* 提取原图的主色调 */
+$primary-color: #6C47FF; /* 亮紫 */
+$primary-gradient: linear-gradient(135deg, #8A2BE2 0%, #4169E1 100%);
+$bg-color: #ffffff;
+$text-gray: #999;
+
+$success-bg: #E8F5E9;
+$success-text: #4CAF50;
+
+.card {
+  background: $bg-color;
+  border-radius: 24px;
+  padding: 40px 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  margin: 20px auto;
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 30px;
+  
+  .welcome-text {
+    font-size: 28px;
+    color: #666;
+    margin-bottom: 20px;
+    display: block;
+  }
+  
+  .days-count {
+    font-size: 80px;
+    font-weight: 800;
+    color: $primary-color; /* 使用紫色 */
+    line-height: 1;
+    display: block;
+    background: $primary-gradient;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; /* 文字渐变效果 */
+  }
+  
+  .days-label {
+    font-size: 24px;
+    color: $text-gray;
+    margin-top: 10px;
+    display: block;
+  }
+}
+
+/* --- 新增：模式选择器 --- */
+.mode-selector {
+  display: flex;
+  background: #F5F6FA; /* 浅灰底色 */
+  border-radius: 20px;
+  padding: 4px;
+  margin-bottom: 30px;
+  width: 80%;
+  
+  .mode-item {
+    flex: 1;
+    text-align: center;
+    padding: 12px 0;
+    border-radius: 16px;
+    font-size: 26px;
+    color: #999;
+    transition: all 0.3s ease;
+    
+    &.active {
+      background: #fff;
+      color: $primary-color;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+  }
+}
+
+/* --- 改造：超级按钮 --- */
+.button-wrapper {
+  width: 100%;
+}
+
+.checkin-btn {
+  position: relative; /* 关键：为了内部绝对定位 */
+  height: 100px;
+  border-radius: 50px;
+  border: none;
+  background: #F0F2FF; /* 进度条未填满时的底色 (极浅的紫色) */
+  overflow: hidden; /* 裁剪进度条圆角 */
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+
+  /* 点击时的按压效果 */
+  &:active {
+    transform: scale(0.98);
+  }
+
+  /* 完成状态 */
+  &.completed {
+     background: $success-bg !important; // 强制覆盖渐变
+     box-shadow: none !important;
+    
+    .btn-text, .btn-content {
+      color: $success-text !important;
+      text-shadow: none;
+    }
+    
+    // 进度模式下的特殊处理
+    &.frequency-mode {
+      .progress-fill { display: none; } // 完成后隐藏进度条背景
+    }
+  }
+
+  &.simple-mode {
+    background: $primary-gradient; // 直接用渐变背景
+    box-shadow: 0 8px 20px rgba(108, 71, 255, 0.3); // 加个投影更显眼
+
+    .btn-text {
+      color: #fff;
+      font-size: 34px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+  }
+
+  &.frequency-mode {
+    background: #F0F2FF; // 浅色底
+    
+    .progress-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      background: $primary-gradient;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1;
+    }
+
+    .btn-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 32px;
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.15); // 确保文字清晰
+    }
+
+    .progress-text-row {
+      display: flex;
+      align-items: center;
+      
+      .progress-nums {
+        margin-left: 12px;
+        font-size: 28px;
+        background: rgba(255,255,255,0.25);
+        padding: 4px 10px;
+        border-radius: 12px;
+      }
+    }
+  }
+
+  // /* 1. 进度条填充层 */
+  // .progress-fill {
+  //   position: absolute;
+  //   left: 0;
+  //   top: 0;
+  //   height: 100%;
+  //   background: $primary-gradient; /* 进度条颜色与原按钮一致 */
+  //   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* 丝滑动画 */
+  //   z-index: 1;
+  // }
+
+  // /* 2. 文字内容层 */
+  // .btn-content {
+  //   position: relative;
+  //   z-index: 2; /* 确保文字在进度条上面 */
+  //   width: 100%;
+  //   height: 100%;
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   color: #fff; /* 默认文字白色 (因为背景是深色渐变) */
+  //   font-size: 32px;
+  //   font-weight: 600;
+    
+  //   /* 混合模式魔法：如果进度条没填满，文字怎么显示？
+  //      方案A：文字始终白色，底色浅紫。
+  //      方案B：根据进度变色 (复杂)。
+  //      这里采用方案A：底色 #F0F2FF 够浅，白色文字可能看不清？
+  //      修正：我们需要反转颜色逻辑。
+  //   */
+    
+  //   /* 修正文字颜色逻辑：
+  //      为了保证文字在 深色进度条 和 浅色底色 上都能看清，
+  //      最简单的做法是给文字加一点点阴影，或者让未填充区域也是深色但透明度低。
+       
+  //      但在本设计中：
+  //      未填充区域 = 浅紫 #F0F2FF
+  //      填充区域 = 深紫渐变
+       
+  //      文字在填充区域(深)上 = 白色 (OK)
+  //      文字在未填充区域(浅)上 = 白色 (看不清!)
+       
+  //      **高级技巧**：mix-blend-mode 或者 简单的让文字始终是紫色，
+  //      但填充层覆盖上来时，填充层里的文字是白色。
+       
+  //      为了代码简单且效果好，建议：
+  //      让 .checkin-btn 的背景色设为 #F0F2FF
+  //      让 .progress-fill 设为 渐变
+  //      让 文字 设为 紫色。
+  //      但是当进度条划过文字时，文字要变白？这在小程序很难做。
+       
+  //      **最终视觉方案**：
+  //      底色：浅灰/浅紫
+  //      进度条：半透明紫色 或 实心紫色
+  //      文字：始终白色，且加 text-shadow，或者
+  //      **文字始终居中，进度条作为背景层，文字加一层淡淡的阴影确保在浅色背景也能稍微看清，或者直接让底色稍微深一点点。**
+       
+  //      **或者更简单的方案**：
+  //      未完成时：按钮整体是紫色渐变 (像原图)。
+  //      进度式：按钮底色变浅灰，进度条是紫色。
+  //   */
+    
+  //   /* 采用方案：文字带阴影，确保对比度 */
+  //   text-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+  // }
+
+  // /* 进度模式下的文字布局 */
+  // .progress-text-row {
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   width: 100%;
+    
+  //   .progress-nums {
+  //     margin-left: 16px;
+  //     font-size: 28px;
+  //     opacity: 0.9;
+  //     background: rgba(255,255,255,0.2);
+  //     padding: 4px 12px;
+  //     border-radius: 10px;
+  //   }
+  // }
+}
+
+/* 针对进度模式未填满时，为了让白色文字在浅底上可见，
+   我们可以给未填充部分加一个稍微深一点的底色，或者让文字变色。
+   这里为了效果最佳，建议 JS 控制：如果 progress < 10%，文字颜色为紫色，否则白色。
+   但 CSS 方案更纯粹：
+*/
+.checkin-btn {
+    background: #dce0f5; /* 稍微深一点的浅紫，保证白色文字勉强可见 */
+}

@@ -13,11 +13,10 @@
 
 .page-container {
     flex: 1;
-    /* 吃掉所有剩余空间 */
-    overflow-y: auto;
-    /* 内容超出时内部滚动 */
-    // background-color: rebeccapurple;
-}
+    overflow: hidden; //这里固定一个高度 让具体的Active 去滚动
+    display: flex;
+    flex-direction: column;
+  }
 
 .footer {
     height: 120px;

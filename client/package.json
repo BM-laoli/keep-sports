@@ -1,8 +1,8 @@
 {
-  "name": "myapp-trao",
+  "name": "TL_101",
   "version": "1.0.0",
   "private": true,
-  "description": "myfirst-taro-project",
+  "description": "TL_101 哑铃-练了吗 小程序",
   "templateInfo": {
     "name": "taro-ui",
     "typescript": true,

@@ -4,8 +4,15 @@ import Taro from "@tarojs/taro";
 import { setter } from "src/core/store/utils";
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
-import { getHistory, PKDay } from "src/core/http/history";
+import { 
+  getHistory, PKDay,
+  getTodayProgress as apiGetTodayProgress,
+  getConfig as apiGetConfig,
+  setConfig as apiSetConfig,
+  PKDayProgress as apiPKDayProgress
+ } from "src/core/http/history";
 import { useDeepMemo } from "src/core/hooks/useDeepMemo";
+import { isNull } from "lodash";
 
 // 注册 dayjs 插件 (可选，为了更好的周处理)
 dayjs.extend(isoWeek);
@@ -37,11 +44,27 @@ export interface WeeklyChartItem {
   value: number;
 }
 
+// 配置接口
+export interface TrainingConfig {
+  targetCount: number;
+  mode: 'simple' | 'frequency';
+}
+
+// 今日进度接口
+export interface TodayProgress {
+  currentCount: number;
+  targetCount: number;
+  isDone: boolean;
+}
+
 // Store 状态接口
 interface ITrainingState {
   rawList: TrainingRecord[]; // 原始数据（用于列表展示）
   heatmapData: HeatmapItem[]; // 热力图数据（预处理后）
   weeklyData: WeeklyChartItem[]; // 本周柱状图数据（预处理后）
+    // [新增] 状态字段
+  config: TrainingConfig;
+  todayProgress: TodayProgress;
 }
 
 // ---------------------------------------------------------
@@ -129,11 +152,15 @@ const trainingState = create(
       rawList: [] as TrainingRecord[],
       heatmapData: [] as HeatmapItem[],
       weeklyData: [] as WeeklyChartItem[],
+      config: { targetCount: 1, mode: 'simple' } as TrainingConfig,
+      todayProgress: { currentCount: 0, targetCount: 1, isDone: false } as TodayProgress,
     },
     (set) => ({
       // 基础 Setter
       setRawList: setter("rawList")(set),
-
+      setConfig: setter("config")(set),
+      setTodayProgress: setter("todayProgress")(set),
+      
       // 核心动作：更新所有数据（通常在网络请求回来后调用）
       setTrainingData: (list: TrainingRecord[]) => {
         set({
@@ -167,14 +194,142 @@ export const setTrainingData = (list: TrainingRecord[]) => {
   trainingState.getState().setTrainingData(list);
 };
 
+export const setTodayProgress = (progress: TrainingConfig) => {
+  trainingState.getState().setTodayProgress(progress);
+};
+
+
+export const setConfig = (progress: TrainingConfig) => {
+  trainingState.getState().setConfig(progress);
+};
+
 // React Hook
 export const useTraining = () => {
   const store = trainingState();
+  const {
+    setTodayProgress,
+    setConfig,
+    config
+  } = trainingState();
 
-  /**
-   * 添加打卡 (业务逻辑封装)
-   */
+  // 进度模式打卡按钮
+  const addCheckInWithProgress = async () => {
+    Taro.showLoading({ title: "打卡中..." });
+    try {
+      // 1. 调用云函数 (注意：PKDay 现在返回 { code, msg, data: { isDone, currentCount... } })
+      const res = await apiPKDayProgress(); 
+      
+      // 2. 更新今日进度 (无论是否完成，进度都会变)
+      if (res && res.data) {
+        setTodayProgress({
+          currentCount: res.data.currentCount,
+          targetCount: res.data.targetCount,
+          isDone: res.data.isDone
+        });
+
+      
+
+        // 3. 只有当目标真正达成 (isDone=true) 时，才刷新历史列表
+        // 或者如果后端逻辑是每次都记录Log，也可以选择每次都刷新，取决于你是否想在列表展示每次Log
+        if (res.data.isDone) {
+           // 重新拉取历史记录 (全量刷新)
+          //  const historyRes = await getHistory();
+          //  setTrainingData(historyRes.data);
+          await initTraining()
+        }
+      } else {
+        if(res.code == 500){
+           Taro.hideLoading();
+           Taro.showToast({ title: res.message,icon:"error" });
+        }
+        // 兜底：如果没有返回详细数据，全量刷新
+        await initTraining();
+      }
+
+      Taro.hideLoading();
+      return true;
+    } catch (error) {
+      console.error(error);
+      Taro.hideLoading();
+      Taro.showToast({ title: "打卡失败", icon: "none" });
+      return false;
+    }
+  };
+
+  // 切换模式 ok
+  const switchMode = async (newMode: 'simple' | 'frequency') => {
+    const newTarget = newMode === 'simple' ? 1 : 2; // 简单模式默认1次，进度模式默认3次(可改)
+    
+    // 1. 乐观更新本地 UI
+    setConfig({
+      mode: newMode,
+      targetCount: newTarget
+    });
+
+    // 2. 调用云函数保存配置
+    try {
+      await apiSetConfig(newTarget, newMode);
+      // 切换模式后，最好重新拉一下进度，因为 target 变了
+      const progressRes = await apiGetTodayProgress();
+      if(progressRes && progressRes.data) {
+        setTodayProgress(progressRes.data);
+      }
+    } catch (e) {
+      console.error("切换模式失败", e);
+      Taro.showToast({ title: "设置失败", icon: "none" });
+    }
+  };
+
+  // 初始化模式 ok
+  const createPKData = async  (data:{
+    newMode: 'simple' | 'frequency'
+  }) => {
+    const {newMode} = data;
+    
+    // 简单模式默认1次，进度模式默认2次(可改) @TODO:其实交给用户但是简单起见先只给两个选项
+    const newTarget = newMode === 'simple' ? 1 : 2; 
+    
+    await apiSetConfig(newTarget, newMode);
+    return
+  }
+
+  // 按钮是否可点
+  const isCheckedIn = useDeepMemo(() => {
+    let isDone = false
+    const isCheckedInProgress = store.todayProgress.isDone;
+    const todayStr = dayjs().format("YYYY-MM-DD");
+    const idDoneWithDay = store.rawList.some((item) => item.dateStr === todayStr);
+    //如果是 progress模式
+    if(store.config.mode == 'simple' ){
+       isDone = idDoneWithDay
+    }else{
+       isDone = isCheckedInProgress
+    }
+    //如果是 Day模式
+    return isDone
+  },[store])
+
+  // 进度模式下的 计算进度百分比 (对应你 UI 中的 progressPercent)
+  const progressPercent = useDeepMemo(() => {
+    const { mode } = store.config;
+    const { currentCount, targetCount, isDone } = store.todayProgress;
+
+    if (mode === 'simple') return isDone ? 100 : 0;
+    
+    // 防止除以0
+    if (targetCount === 0) return 0;
+    
+    return Math.min((currentCount / targetCount) * 100, 100);
+  }, [store.config, store.todayProgress]);
+
+  //添加打卡 (业务逻辑封装)
   const addCheckIn = async () => {
+    // 如果是进度式
+    if(config.mode == 'frequency'){
+      await addCheckInWithProgress()
+      return;
+    }
+  
     Taro.showLoading({ title: "打卡中..." });
     try {
       // 1. 调用云函数
@@ -197,21 +352,18 @@ export const useTraining = () => {
     return store.heatmapData.filter(item => item.isDone).length || 1
   },[store.heatmapData])
 
-  const isCheckedIn = useDeepMemo(() => {
-    // 1. 获取今天的标准日期字符串 "2025-02-20"
-    const todayStr = dayjs().format("YYYY-MM-DD");
-
-    // 2. 遍历原始列表，查找是否存在今天的记录
-    // 使用 .some() 方法，找到一个即返回 true，效率较高
-    return store.rawList.some((item) => item.dateStr === todayStr);
-  }, [store.rawList]);
-
   return {
     ...store,
+     mode: store.config.mode,
+     progress: {
+      current: store.todayProgress.currentCount,
+      target: store.todayProgress.targetCount,
+      progressPercent:progressPercent
+    },
+    createPKData,
+    switchMode,
+    addCheckInWithProgress,
     // 计算属性：今日是否已打卡
-    isTodayDone:
-      store.heatmapData.find((h) => h.date === dayjs().format("YYYY-MM-DD"))
-        ?.isDone || false,
     // 计算属性：总打卡天数
     totalDays: totalDays,
     // 动作
@@ -224,15 +376,63 @@ export const useTraining = () => {
 /**
  * 初始化加载数据
  */
-export const initTraining = async () => {
-  // 确保云能力已初始化 (虽然 initUser 可能做过了，但防守编程)
-  // if (!Taro.cloud) { ... }
+// export const initTraining = async () => {
+//   // 确保云能力已初始化 (虽然 initUser 可能做过了，但防守编程)
+//   // if (!Taro.cloud) { ... }
 
+//   try {
+//     // 调用云函数获取列表
+//     const res = await getHistory();
+//     setTrainingData(res.data);
+//   } catch (e) {
+//     console.error("加载训练数据失败", e);
+//   }
+// };
+
+
+/**
+ * [修改] 初始化加载数据
+ * 并行加载：历史记录、配置、今日进度
+ */
+export const initTraining = async () => {
   try {
-    // 调用云函数获取列表
-    const res = await getHistory();
-    setTrainingData(res.data);
+    // 使用 Promise.all 并行请求提高速度
+    const [historyRes, configRes, progressRes] = await Promise.all([
+      getHistory(),
+      apiGetConfig(),
+      apiGetTodayProgress()
+    ]);
+
+    console.log("初始化数据", historyRes)
+    // 1. 设置历史记录
+    if (historyRes && historyRes.data) {
+      setTrainingData(historyRes.data);
+    }
+
+    // 2. 设置config 
+    if (configRes && configRes.data) {
+      setConfig({
+        targetCount: configRes.data.targetCount,
+        mode: configRes.data.mode
+      });
+    } else if (isNull(configRes.data)) {
+      await apiSetConfig(
+        1,
+        'simple'
+      )
+      const configRes = await apiGetConfig()
+      setConfig({
+        targetCount: configRes.data.targetCount,
+        mode: configRes.data.mode
+      });
+    }
+
+    // 3. 设置今日进度
+    if (progressRes && progressRes.data) {
+      setTodayProgress(progressRes.data);
+    }
+
   } catch (e) {
     console.error("加载训练数据失败", e);
   }
-};
+}

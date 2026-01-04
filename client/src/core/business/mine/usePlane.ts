@@ -7,7 +7,8 @@ import { useDeepMemo } from "src/core/hooks/useDeepMemo";
 import { 
   createPlan as apiCreatePlan, 
   getPlanList as apiGetPlanList, 
-  deletePlan as apiDeletePlan 
+  deletePlan as apiDeletePlan, 
+  updatePlan as apiUpdatePlan
 } from "src/core/http"; 
 import { transformJsonToUiData } from "src/core/utils/planAdapter";
 import { useUser } from "./useUser";
@@ -437,11 +438,13 @@ const planState = create(
     {
       rawPlans: [] as PlanRecord[],
       activePlanId: 0 || '00001', // 默认空，加载后选中第一个
+      editTempData: {} as  any
     },
     (set, get) => ({
       // 基础 Setters
       setRawPlans: setter("rawPlans")(set),
       setActivePlanId: setter("activePlanId")(set),
+      setEditTempData: setter("editTempData")(set),
 
       // 批量更新数据 (加载列表后调用)
       setPlanList: (list: PlanRecord[] = []) => {
@@ -587,8 +590,11 @@ export const usePlan = () => {
         if (res.confirm) {
           Taro.showLoading({ title: "删除中" });
           try {
+            const nextId = _rawPlans.findIndex((t) => t._id == store.activePlanId ) + 1
             await apiDeletePlan(store.activePlanId);
             store.optimisticRemove(store.activePlanId);
+            //删除之后向后选一个ID
+            store.setActivePlanId(_rawPlans[nextId]._id);
             Taro.hideLoading();
           } catch (e) {
             Taro.hideLoading();
@@ -599,6 +605,34 @@ export const usePlan = () => {
     });
   };
 
+  /**
+   * 编辑当前计划 @TODO:
+   */
+  const updatePlane = async (data) => {
+    Taro.showLoading({ title: "编辑中..." });
+    try {
+      await apiUpdatePlan(data._id, data)
+      await initPlans();
+      Taro.navigateBack()
+    } catch (error) {
+      console.error('Error',error)
+    } finally {
+      Taro.hideLoading();
+    }
+  }
+
+  /**
+   * 前置的编辑计划路由 Jump
+   */
+  const jump2Edit = (activePlanId) => {
+    const itemData = store.rawPlans.find(item => item._id == activePlanId)
+    store.setEditTempData(itemData)
+    
+    Taro.navigateTo({
+      url:"/pages/planeEdit/index"
+    })
+  }
+
   return {
     ...store,
     tabs,            // 供 Tab 组件使用
@@ -606,6 +640,8 @@ export const usePlan = () => {
     initPlans,
     createNewPlan,
     deleteCurrentPlan,
+    updatePlane,
+    jump2Edit
     // 如果需要切换 Tab，直接解构出 setActivePlanId 即可
   };
 };
