@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>重庆梁平 · 税收、用电与存款里的三年（2023–2025）</title>
+<style>
+  :root {
+    color-scheme: light;
+    --surface-1: #fcfcfb;
+    --page: #f9f9f7;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted: #898781;
+    --grid: #e1e0d9;
+    --axis: #c3c2b7;
+    --border: rgba(11, 11, 11, 0.10);
+    --series-1: #2a78d6;
+    --series-2: #eb6834;
+    --series-3: #1baf7a;
+    --negative: #d03b3b;
+    --good: #0ca30c;
+    --critical: #d03b3b;
+    --tip-bg: #0b0b0b;
+    --tip-text: #fcfcfb;
+    --card-shadow: 0 1px 2px rgba(11, 11, 11, 0.04);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --surface-1: #1a1a19;
+      --page: #0d0d0d;
+      --text-primary: #f0efec;
+      --text-secondary: #c3c2b7;
+      --text-muted: #898781;
+      --grid: #2c2c2a;
+      --axis: #383835;
+      --border: rgba(255, 255, 255, 0.10);
+      --series-1: #3987e5;
+      --series-2: #d95926;
+      --series-3: #199e70;
+      --negative: #e66767;
+      --good: #0ca30c;
+      --critical: #e66767;
+      --tip-bg: #f0efec;
+      --tip-text: #1a1a19;
+      --card-shadow: none;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --surface-1: #1a1a19;
+    --page: #0d0d0d;
+    --text-primary: #f0efec;
+    --text-secondary: #c3c2b7;
+    --text-muted: #898781;
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --border: rgba(255, 255, 255, 0.10);
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --negative: #e66767;
+    --good: #0ca30c;
+    --critical: #e66767;
+    --tip-bg: #f0efec;
+    --tip-text: #1a1a19;
+    --card-shadow: none;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--text-primary);
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--series-1); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+
+  .masthead {
+    padding: 64px 0 36px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, var(--surface-1), var(--page));
+  }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-size: clamp(30px, 5vw, 46px);
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    margin: 0 0 18px;
+    font-weight: 700;
+  }
+  .deck {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 800px;
+    margin: 0 0 24px;
+  }
+  .meta {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .toc {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: color-mix(in srgb, var(--page) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  .toc-inner {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 0;
+    font-size: 13px;
+  }
+  .toc-links {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    overflow-x: auto;
+    flex: 1;
+    scrollbar-width: none;
+  }
+  .toc-links::-webkit-scrollbar { display: none; }
+  .toc a { color: var(--text-secondary); white-space: nowrap; }
+  .toc a:hover { color: var(--text-primary); }
+  .theme-toggle {
+    margin-left: 0;
+    flex: none;
+    border: 1px solid var(--border);
+    background: var(--surface-1);
+    color: var(--text-secondary);
+    border-radius: 999px;
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 1;
+  }
+
+  .hero-band {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.9fr);
+    gap: 36px;
+    align-items: end;
+    padding: 42px 0 12px;
+  }
+  .hero-value {
+    font-size: clamp(56px, 9vw, 84px);
+    line-height: 0.95;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--negative);
+  }
+  .hero-label {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 340px;
+    margin-top: 10px;
+  }
+  .hero-label span { color: var(--text-muted); font-size: 13px; }
+
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .kpi { background: var(--surface-1); padding: 18px 20px; }
+  .kpi-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+  .kpi-value { font-size: 26px; font-weight: 650; line-height: 1.2; }
+  .kpi-delta { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  .kpi-delta.down { color: var(--critical); }
+  .kpi-delta.up { color: var(--good); }
+
+  .callout {
+    margin: 40px 0 8px;
+    padding: 24px 28px;
+    border-left: 3px solid var(--negative);
+    background: var(--surface-1);
+    border-radius: 0 12px 12px 0;
+  }
+  .callout-title {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--negative);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .callout ol { margin: 0; padding-left: 20px; }
+  .callout li { margin: 10px 0; color: var(--text-secondary); }
+  .callout strong { color: var(--text-primary); }
+
+  section { padding: 56px 0 8px; }
+  .section-head {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 18px;
+    align-items: start;
+    margin-bottom: 26px;
+  }
+  .section-num {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+    padding-top: 6px;
+  }
+  h2 {
+    font-size: clamp(24px, 3.4vw, 32px);
+    line-height: 1.25;
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+  }
+  .section-deck {
+    color: var(--text-secondary);
+    max-width: 800px;
+    margin: 0;
+    font-size: 16px;
+  }
+  .prose { max-width: 800px; color: var(--text-secondary); }
+  .prose p { margin: 0 0 14px; }
+  .prose strong { color: var(--text-primary); }
+
+  .chart-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .chart-card {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 22px 16px;
+    margin: 20px 0;
+    box-shadow: var(--card-shadow);
+    min-width: 0;
+  }
+  .chart-card.full { grid-column: 1 / -1; }
+  .chart-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  .chart-head h3 { font-size: 17px; margin: 0 0 4px; line-height: 1.35; }
+  .chart-sub { font-size: 12.5px; color: var(--text-muted); margin: 0; }
+  .chart { position: relative; width: 100%; min-height: 240px; }
+  .source {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    margin: 8px 0 0;
+    line-height: 1.6;
+  }
+
+  .legend {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    padding-top: 2px;
+  }
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+  .legend-key { width: 14px; height: 2px; border-radius: 1px; background: var(--c); }
+  .legend-key.bar { width: 10px; height: 10px; border-radius: 2px; }
+  .legend-key.series-1 { --c: var(--series-1); }
+  .legend-key.series-2 { --c: var(--series-2); }
+  .legend-key.series-3 { --c: var(--series-3); }
+
+  .table-view {
+    margin-top: 10px;
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+  }
+  .table-view summary {
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .table-wrap { overflow-x: auto; margin-top: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+  th, td {
+    text-align: right;
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  th:first-child, td:first-child { text-align: left; }
+  thead th { color: var(--text-muted); font-weight: 500; }
+  tbody td { font-variant-numeric: tabular-nums; }
+  tbody th { font-weight: 500; }
+
+  .evidence {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .evidence table { font-size: 13px; }
+  .evidence thead th { background: var(--surface-1); }
+  .evidence td, .evidence th { padding: 9px 12px; }
+  .tag {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+  .tag-a { background: rgba(12, 163, 12, 0.12); color: var(--good); }
+  .tag-b { background: rgba(250, 178, 25, 0.16); color: #8a5a00; }
+  .tag-c { background: rgba(208, 59, 59, 0.12); color: var(--critical); }
+  :root[data-theme="dark"] .tag-b { color: #fab219; }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .tag-b { color: #fab219; }
+  }
+
+  .grid-line { stroke: var(--grid); stroke-width: 1; }
+  .axis-line { stroke: var(--axis); stroke-width: 1; }
+  .tick-text {
+    fill: var(--text-muted);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+  }
+  .value-label { fill: var(--text-primary); font-size: 12px; font-weight: 600; }
+  .cat-label { fill: var(--text-secondary); font-size: 11px; }
+  .line { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .line.series-1 { stroke: var(--series-1); }
+  .line.series-2 { stroke: var(--series-2); }
+  .line.series-3 { stroke: var(--series-3); }
+  .dot { stroke: var(--surface-1); stroke-width: 2; }
+  .dot.series-1 { fill: var(--series-1); }
+  .dot.series-2 { fill: var(--series-2); }
+  .dot.series-3 { fill: var(--series-3); }
+  .bar.series-1 { fill: var(--series-1); }
+  .bar.series-2 { fill: var(--series-2); }
+  .bar.series-3 { fill: var(--series-3); }
+  .bar.negative { fill: var(--negative); }
+  .seg.series-1 { fill: var(--series-1); }
+  .seg.series-2 { fill: var(--series-2); }
+  .seg.series-3 { fill: var(--series-3); }
+  .seg-label { fill: #ffffff; font-size: 11px; font-weight: 600; }
+  .crosshair { stroke: var(--axis); stroke-width: 1; }
+  .reference-line { stroke: var(--negative); stroke-width: 2; }
+  .reference-label { fill: var(--negative); font-size: 11px; font-weight: 600; }
+  .hit { fill: transparent; }
+
+  .chart-tip {
+    position: absolute;
+    pointer-events: none;
+    z-index: 5;
+    background: var(--tip-bg);
+    color: var(--tip-text);
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    line-height: 1.5;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    transform: translate(-50%, -112%);
+    transition: opacity 0.12s ease;
+    min-width: 120px;
+  }
+  .chart-tip.show { opacity: 1; }
+  .tip-title { font-weight: 600; margin-bottom: 4px; }
+  .tip-row { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .tip-key { width: 10px; height: 2px; border-radius: 1px; background: var(--c); flex: none; }
+  .tip-key.series-1 { --c: var(--series-1); }
+  .tip-key.series-2 { --c: var(--series-2); }
+  .tip-key.series-3 { --c: var(--series-3); }
+  .tip-name { color: var(--tip-text); opacity: 0.72; }
+  .tip-value { margin-left: auto; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .notes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .note {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .note h4 { margin: 0 0 8px; font-size: 14px; }
+  .note p { margin: 0; font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+  .appendix-table { margin-top: 18px; }
+  .appendix-table table { font-size: 12.5px; }
+  .appendix-table td:first-child, .appendix-table th:first-child {
+    white-space: normal;
+    min-width: 170px;
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    margin-top: 64px;
+    padding: 28px 0 48px;
+    color: var(--text-muted);
+    font-size: 12.5px;
+  }
+
+  @media (max-width: 860px) {
+    .hero-band { grid-template-columns: 1fr; gap: 22px; }
+    .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .chart-grid { grid-template-columns: 1fr; }
+    .section-head { grid-template-columns: 1fr; gap: 4px; }
+    .section-num { padding-top: 0; }
+    .chart-head { flex-direction: column; }
+    .legend { justify-content: flex-start; }
+    .notes { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 520px) {
+    .wrap { padding: 0 18px; }
+    .kpis { grid-template-columns: 1fr; }
+    .chart-card { padding: 16px 14px 12px; }
+    h1 { font-size: 30px; }
+  }
+  @media print {
+    .toc, .theme-toggle { display: none; }
+    body { background: #ffffff; color: #0b0b0b; }
+    .chart-card, .callout, .note { break-inside: avoid; }
+    .table-view { display: none; }
+  }
+</style>
+</head>
+<body data-palette="#2a78d6,#eb6834,#1baf7a">
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">区域经济侧证 · 重庆梁平 · 2023–2025</div>
+    <h1>产量在涨，税收和利润在跌</h1>
+    <p class="deck">不采信 GDP 增速作结论。用增值税、企业所得税、住户存贷款、工业用电和施工许可，去对账梁平这三年：政府说产值在增长，税务和银行的数据却说利润在收缩。</p>
+    <div class="meta">
+      <span>数据截至 2026 年 11 月</span>
+      <span>证据分级：A 硬数据 / B 行政记录 / C 政府叙事</span>
+      <span>观察窗口：2023–2025</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap toc-inner">
+    <div class="toc-links">
+      <a href="#summary">核心判断</a>
+      <a href="#evidence">证据分级</a>
+      <a href="#tax">税收</a>
+      <a href="#industry">工业</a>
+      <a href="#money">钱</a>
+      <a href="#projects">项目与土地</a>
+      <a href="#people">人口与消费</a>
+      <a href="#jobs">就业与工资</a>
+      <a href="#conclusion">结论</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section id="summary">
+    <div class="hero-band">
+      <div>
+        <div class="hero-value">-28.1%</div>
+        <div class="hero-label">2025 年企业所得税同比<br><span>同年规上工业总产值报 +6.4%，GDP 报 +6.3%</span></div>
+      </div>
+      <div class="kpis">
+        <div class="kpi">
+          <div class="kpi-label">增值税增速</div>
+          <div class="kpi-value">-1.3%</div>
+          <div class="kpi-delta down">2023 年 +37.1%</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">规上工业总产值</div>
+          <div class="kpi-value">+6.4%</div>
+          <div class="kpi-delta">政府口径，待验证</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">住户存款</div>
+          <div class="kpi-value">681 亿</div>
+          <div class="kpi-delta up">两年 +23.1%</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">工业贷款</div>
+          <div class="kpi-value">22.94 亿</div>
+          <div class="kpi-delta up">2025 年 +16.9%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">核心判断</div>
+      <ol>
+        <li><strong>税收不认产值。</strong>2025 年规上工业总产值 +6.4%，增值税 -1.3%，企业所得税 -28.1%。产量在涨，利润和税收在跌；这不是“增速高低”的问题，是增长有没有变成钱的问题。</li>
+        <li><strong>用电不认产值。</strong>2024 年规上工业总产值 +6.4%，规上工业用电只 +1.2%，综合能耗 -13.0%。增长集中在低能耗行业和新入规企业（117 → 121 家），水泥等耗能行业在收缩。</li>
+        <li><strong>居民在存钱，不借钱。</strong>住户存款 553 → 681 亿元（两年 +23.1%），住户贷款 138.5 → 134.7 亿元（两年 -2.7%）；2025 年存款 +10.2%、贷款 +2.8%。</li>
+        <li><strong>土地收入下台阶。</strong>政府性基金收入 29.47 → 19.67 → 19.67 亿元；2025 年预算调整曾预期 23.12 亿元，实际少 3.45 亿元。土地财政依赖度 83.4% → 49.8%，不是因为财政变强，是因为土地收入腰斩。</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="evidence">
+    <div class="section-head">
+      <div class="section-num">00</div>
+      <div>
+        <h2>先分级：哪些数据能当证据</h2>
+        <p class="section-deck">政府报告里的 GDP、规上工业总产值、社零、固投、招商签约，是“说法”，不是“证据”。本报告把它们降为 C 级，只用 A 级硬数据下结论。</p>
+      </div>
+    </div>
+
+    <div class="evidence">
+      <table>
+        <thead>
+          <tr><th>级别</th><th>数据</th><th>来源系统</th><th>怎么用</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="tag tag-a">A 硬</span></td><td>增值税、企业所得税、非税收入</td><td>税务 / 财政</td><td>验证产出是否变成税收和利润</td></tr>
+          <tr><td><span class="tag tag-a">A 硬</span></td><td>住户存款、住户贷款、工业贷款</td><td>人民银行金融统计</td><td>验证居民和企业的真实资金行为</td></tr>
+          <tr><td><span class="tag tag-a">A 硬</span></td><td>规上工业用电量、综合能耗</td><td>电网 / 能源统计</td><td>验证工业活动的物理量</td></tr>
+          <tr><td><span class="tag tag-a">A 硬</span></td><td>施工许可、环评审批、土地成交</td><td>行政审批记录</td><td>验证项目是否真的落地</td></tr>
+          <tr><td><span class="tag tag-b">B 中</span></td><td>财政收支、政府性基金、商品房销售</td><td>财政 / 住建</td><td>验证财政与房地产的压力</td></tr>
+          <tr><td><span class="tag tag-b">B 中</span></td><td>规上工业企业数、能耗表</td><td>统计年鉴</td><td>验证工业结构变化</td></tr>
+          <tr><td><span class="tag tag-c">C 软</span></td><td>GDP、规上工业总产值/增加值、社零、固投、招商签约</td><td>政府叙事</td><td>只作为“待验证的说法”，不作结论</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="source">说明：A 级数据也不是绝对真实——税收受留抵退税、缓税、汇算清缴节奏影响；用电和能耗只覆盖规上企业；施工许可和环评是行政记录，可逐项核对。但它们由不同系统产生，比单一 GDP 数字更难同时注水。</p>
+  </section>
+
+  <section id="tax">
+    <div class="section-head">
+      <div class="section-num">01</div>
+      <div>
+        <h2>税收：产值在涨，税基在缩</h2>
+        <p class="section-deck">2025 年规上工业总产值报 +6.4%，GDP 报 +6.3%；但增值税 -1.3%，企业所得税 -28.1%。如果生产和利润真的在增长，这两个税种不该同时下跌。</p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p><strong>增值税是最接近“真实销售”的指标。</strong>2023 年梁平增值税 3.68 亿元、增长 37.1%；2024 年降到 3.45 亿元、-6.2%；2025 年 3.40 亿元、-1.3%。同期规上工业总产值连续两年报 +6.4%。增值税连续两年负增长，说明要么销售没有产值说的那么好，要么留抵退税/缓税在起作用——两种可能都需要税务明细来解释。</p>
+      <p><strong>企业所得税更直接地反映利润。</strong>2023 年 0.79 亿元（-11.3%），2024 年 1.03 亿元（+30.2%），2025 年 0.74 亿元（-28.1%）。2025 年的利润税基几乎回到 2023 年以下，而规上工业总产值仍在增长。这是“增产不增收”的典型形态。</p>
+      <p><strong>财政收入靠非税撑住。</strong>2025 年一般公共预算收入 39.50 亿元、+5.0%；税收 18.21 亿元、+4.7%；非税 21.29 亿元、+5.3%。非税占比 53.9%，连续三年超过 53.8%。收入还在增长，但增长的质量在下降。</p>
+    </div>
+
+    <figure class="chart-card full">
+      <div class="chart-head">
+        <div>
+          <h3>规上工业总产值、增值税与企业所得税增速</h3>
+          <p class="chart-sub">2024–2025，单位：%；2023 年规上工业总产值增速未披露</p>
+        </div>
+        <div class="legend"></div>
+      </div>
+      <div class="chart" data-chart="tax-output" data-height="320"></div>
+      <figcaption class="source">来源：梁平区统计公报、区统计局 1–12 月季度数据。2025 年产值 +6.4%，增值税 -1.3%，企业所得税 -28.1%。</figcaption>
+      <details class="table-view"><summary>查看数据表</summary><div class="table-wrap" data-table></div></details>
+    </figure>
+
+    <div class="chart-grid">
+      <figure class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>一般公共预算收入结构</h3>
+            <p class="chart-sub">2023–2025，单位：亿元；顶部为非税占比</p>
+          </div>
+          <div class="legend"></div>
+        </div>
+        <div class="chart" data-chart="fiscal-structure" data-height="320"></div>
+        <figcaption class="source">来源：统计公报、区统计局季度数据。非税收入 = 一般公共预算收入 - 税收收入。</figcaption>
+        <details class="table-view"><summary>查看数据表</summary><div class="table-wrap" data-table></div></details>
+      </figure>
+
+      <figure class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>税收、非税与政府性基金收入增速</h3>
+            <p class="chart-sub">2023–2025，单位：%</p>
+          </div>
+          <div class="legend"></div>
+        </div>
+        <div class="chart" data-chart="revenue-growth" data-height="320"></div>
+        <figcaption class="source">来源：区统计局 1–12 月季度数据。2024 年政府性基金收入 -33.3%，2025 年实际仅 +0.02%。</figcaption>
+        <details class="table-view"><summary>查看数据表</summary><div class="table-wrap" data-table></div></details>
+      </figure>
+    </div>
+  </section>
+
+  <section id="industry">
+    <div class="section-head">
+      <div class="section-num">02</div>
+      <div>
+        <h2>工业：用电只增 1.2%，能耗降 13%</h2>
+        <p class="section-deck">2024 年规上工业总产值报 +6.4%，但规上工业用电只从 3.65 亿千瓦时增到 3.70 亿千瓦时（+1.2%），综合能耗从 24.73 万吨标煤降到 21.51 万吨（-13.0%）。</p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p><strong>能耗下降主要来自水泥。</strong>2023 年非金属矿物制品业综合能耗 18.89 万吨标煤，2024 年降到 16.90 万吨；同期黑色金属、电力热力等行业的能耗基本持平。也就是说，工业产值增长不是靠耗能行业，而是靠集成电路、装备制造等低能耗行业——这能解释一部分“用电不跟产值走”。</p>
+      <p><strong>但企业数也在增加。</strong>规上工业企业从 2023 年的 117 家增到 2024 年的 121 家。产值增长里有多少来自新入规企业、多少来自存量企业，统计公报没有拆开。新入规会抬高总产值，但不一定带来同比例的用电和税收。</p>
+      <p><strong>2025 年的用电数据还没公布。</strong>目前只有 2025 年上半年工业用电 +9.75% 的报道。如果全年用电能保持这个增速，2025 年的“产值 +6.4%”至少在物理量上能得到部分支持；但在拿到全年数据之前，这个判断只能存疑。</p>
+    </div>
+
+    <figure class="chart-card full">
+      <div class="chart-head">
+        <div>
+          <h3>规上工业总产值、用电量与综合能耗指数</h3>
+          <p class="chart-sub">2023 = 100；用电与能耗仅到 2024 年</p>
+        </div>
+        <div class="legend"></div>
+      </div>
+      <div class="chart" data-chart="industrial-index" data-height="320"></div>
+      <figcaption class="source">来源：统计公报、梁平统计年鉴（2024/2025）。产值指数按 2024 年 +6.4%、2025 年 +6.4% 推算；用电与能耗为规上工业口径。</figcaption>
+      <details class="table-view"><summary>查看数据表</summary><div class="table-wrap" data-table></div></details>
+    </figure>
+  </section>
+
+  <section id="money">
+    <div class="section-head">
+      <div class="section-num">03</div>
+      <div>
+        <h2>钱：居民存钱，企业借钱</h2>
+        <p class="section-deck">住户存款两年增加 127.9 亿元（+23.1%），住户贷款反而减少 3.8 亿元（-2.7%）。与此同时，工业贷款 2025 年增长 16.9%，但增值税仍在下降。</p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p><strong>居民在修复资产负债表。</strong>住户存款 553.25 → 618.19 → 681.14 亿元，2025 年增速 10.2%；住户贷款 138.53 → 131.09 → 134.72 亿元，2024 年收缩、2025 年仅回升 2.8%。存款与贷款的缺口从 414.7 亿元扩大到 546.4 亿元。这和社零只增 2.5% 是同一件事的两面。</p>
+      <p><strong>工业贷款在逆势扩张。</strong>工业贷款 20.49 → 19.61 → 22.94 亿元，2025 年 +16.9%；同期增值税 -1.3%、企业所得税 -28.1%。贷款可能投向了低空经济、集成电路等尚未形成产值的项目，也可能是政策性的纾困或置换。无论哪种，信贷扩张还没有变成税收。</p>
+    </div>
+
+    <div class="chart-grid">
+      <figure class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>住户存款与住户贷款</h3>
+            <p class="chart-sub">2023–2025，单位：亿元</p>
+          </div>
+          <div class="legend"></div>
+        </div>
+        <div class="chart" data-chart="household" data-height="320"></div>
+        <figcaption class="source">来源：区统计局 1–12 月季度数据（人行金融统计）。</figcaption>
+        <details class="table-view"><summary>查看数据表</summary><div class="table-wrap" data-table></div></details>
+      </figure>
+
+      <figure class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>工业贷款与增值税增速</h3>
+            <p class="chart-sub">2024–2025，单位：%</p>
+          </div>
+          <div class="legend"></div>
+        </div>
+        <div class="chart" data-chart="industrial-credit" data-height="320"></div>
+        <figcaption class="source">来源：区统计局季度数据。工业贷款增速按余额计算；2025 年 +16.9% 为报表增速。</figcaption>
+        <details class="table-view"><summary>查看数据表</summary><div class="table-wrap" data-table></div></details>
+      </figure>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="section-head">
+      <div class="section-num">04</div>
+      <div>
+        <h2>项目与土地：手续减半，土地收入下台阶</h2>
+        <p class="section-deck">施工许可 55 → 30 → 31 件，环评审批 33 → 15 → 19 个；政府性基金收入 29.47 → 19.67 → 19.67 亿元。2025 年预算调整曾预期 23.12 亿元，实际少了 3.45 亿元。</p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p><strong>项目端在 2024 年腰斩，2025 年没有修复。</strong>施工许可和环评审批都只有 2023 年的六成左右。固投仍报 +14.3%，工业投资 +58.5%，但手续数量没有跟上——投资更可能集中在续建、设备购置和土地款，而不是新开工。</p>
+      <p><strong>土地收入没有再回到 2023 年。</strong>政府性基金收入 2023 年 29.47 亿元，2024 年 -33.3% 到 19.67 亿元，2025 年实际 19.67 亿元、几乎零增长。2025 年预算调整把政府性基金收入调到 23.12 亿元，最终执行少了 3.45 亿元。土地财政依赖度从 83.4% 降到 49.8%，但这是因为分母（一般公共预算收入）变大、分子（土地收入）腰斩，不是财政结构变健康。</p>
+      <p><strong>房地产是“以价换量”。</strong>商品房销售面积 39.94 → 28.92 → 30.28 万平方米，2025 年回升 4.7%；销售额 18.89 → 12.08 → 10.44 亿元，2025 年仍下降 13.6%。按两者推算，2025 年均价约 3,448 元/平方米，较 2023 年的 4,730 元下跌 27%。2024 年房地产开发利润已经转负（-0.22 亿元，2023 年为 +2.12 亿元）。</p>
+    </div>
+
+    <div class="chart-grid">
+      <figure class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>施工许可与环评审批</h3>
+            <p class="chart-sub">2023–2025，单位：件 / 个</p>
+          </div>
+          <div class="legend"></div>
+        </div>
+        <div class="chart" data-chart="permits" data-height="320"></div>
+        <figcaption class="source">来源：区住建委施工许可登记表、区生态环境局环评审批公示。2023 年环评为报告表审批 33 个，2024/2025 为审批公告条数。</figcaption>
+        <details class="table-view"><summary>查看数据表</summary><div class="table-wrap" data-table></div></details>
+      </figure>
+
+      <figure class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>政府性基金收入</h3>
+            <p class="chart-sub">2023–2025，单位：亿元</p>
+          </div>
+        </div>
+        <div class="chart" data-chart="land-fund" data-height="320"></div>
+        <figcaption class="source">来源：区统计局 1–12 月季度数据。2025 年预算调整数为 23.12 亿元，实际执行 19.67 亿元。</figcaption>
+        <details class="table-view"><summary>查看数据表</summary><div class="table-wrap" data-table></div></details>
+      </figure>
+    </div>
+
+    <div class="chart-grid">
+      <figure class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>商品房销售面积与销售额</h3>
+            <p class="chart-sub">2023 = 100，指数化后比较</p>
+          </div>
+          <div class="legend"></div>
+        </div>
+        <div class="chart" data-chart="real-estate-index" data-height="300"></div>
+        <figcaption class="source">来源：梁平统计年鉴（2024/2025）、2025 年统计公报。2025 年绝对额为按增速推算。</figcaption>
+        <details class="table-view"><summary>查看数据表</summary><div class="table-wrap" data-table></div></details>
+      </figure>
+
+      <figure class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>房地产开发利润</h3>
+            <p class="chart-sub">2023–2024，单位：亿元</p>
+          </div>
+        </div>
+        <div class="chart" data-chart="real-estate-profit" data-height="300"></div>
+        <figcaption class="source">来源：梁平统计年鉴（2024/2025）。2024 年利润总额 -2,226.4 万元，2023 年 +2.12 亿元。</figcaption>
+        <details class="table-view"><summary>查看数据表</summary><div class="table-wrap" data-table></div></details>
+      </figure>
+    </div>
+  </section>
+
+  <section id="people">
+    <div class="section-head">
+      <div class="section-num">05</div>
+      <div>
+        <h2>人口与消费：两条线都在往下走</h2>
+        <p class="section-deck">常住人口两年少 0.54 万，小学在校生两年少 4,548 人（-11.4%），新增市场主体两年少 11,442 户（-67.5%）。社零增速从 7.2% 掉到 2.5%。</p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p><strong>学龄人口下降得比常住人口快。</strong>常住人口 62.89 → 62.50 → 62.35 万，年均 -0.4%；小学在校生 39,920 → 37,723 → 35,372 人，两年 -11.4%。年轻家庭在外流，这比常住人口更能说明未来的劳动供给和消费基数。</p>
+      <p><strong>市场主体在收缩。</strong>新增市场主体 16,956 → 6,839 → 5,514 户，两年 -67.5%。2023 年可能有注册便利化带来的脉冲，但 2024–2025 的持续下滑是真实的。城镇新增就业 6,129 → 5,652 → 6,054 人，基本稳定；2025 年统计公报为 6,054 人，政府工作报告为 8,200 人，两者相差 2,146 人。</p>
+      <p><strong>消费是三年里最弱的一环。</strong>社零增速 7.2% → 2.3% → 2.5%；快递业务量增速 31.2% → 41.8% → 17.2%（用邮政寄递代理）。快递仍远高于社零，但这更可能是电商外发，不是本地消费扩张。</p>
+    </div>
+
+    <figure class="chart-card full">
+      <div class="chart-head">
+        <div>
+          <h3>常住人口与小学在校生指数</h3>
+          <p class="chart-sub">2023 = 100</p>
+        </div>
+        <div class="legend"></div>
+      </div>
+      <div class="chart" data-chart="population-index" data-height="300"></div>
+      <figcaption class="source">来源：统计公报。两条线单位不同，指数化后放在同一坐标轴上比较。</figcaption>
+      <details class="table-view"><summary>查看数据表</summary><div class="table-wrap" data-table></div></details>
+    </figure>
+
+    <div class="chart-grid">
+      <figure class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>新增市场主体</h3>
+            <p class="chart-sub">2023–2025，单位：户</p>
+          </div>
+        </div>
+        <div class="chart" data-chart="new-business" data-height="280"></div>
+        <figcaption class="source">来源：统计公报。2023 年可能含注册便利化带来的脉冲。</figcaption>
+        <details class="table-view"><summary>查看数据表</summary><div class="table-wrap" data-table></div></details>
+      </figure>
+
+      <figure class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>社零增速与快递业务量增速</h3>
+            <p class="chart-sub">2023–2025，单位：%</p>
+          </div>
+          <div class="legend"></div>
+        </div>
+        <div class="chart" data-chart="consumption" data-height="280"></div>
+        <figcaption class="source">来源：统计公报。快递增速用邮政行业寄递业务量增速代理。</figcaption>
+        <details class="table-view"><summary>查看数据表</summary><div class="table-wrap" data-table></div></details>
+      </figure>
+    </div>
+  </section>
+
+  <section id="jobs">
+    <div class="section-head">
+      <div class="section-num">06</div>
+      <div>
+        <h2>年轻人回去能做什么</h2>
+        <p class="section-deck">梁平的主流工资不在 1 万，而在 4–6 千。10k 已经高于渝东北非私营平均，是私营平均的 2.1 倍。</p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p><strong>先看工资基准。</strong>2024 年渝东北城镇非私营单位年平均工资 99,962 元（约 8,330 元/月），私营单位 56,706 元（约 4,726 元/月）；梁平 2025 年城镇居民人均可支配收入 51,417 元（约 4,285 元/月），全体居民 39,283 元（约 3,274 元/月）。10k/月 = 12 万/年，已经高于渝东北非私营平均，是私营平均的 2.1 倍，是梁平城镇居民人均可支配收入的 2.3 倍。</p>
+      <p><strong>再看岗位样本。</strong>梁平本地招聘平台上，主流岗位集中在 4–8k：普工 5–8k、理疗师 5–8k、采购员 6–8k、区域经理 6–8k、销售 5–8k；辅警约 4.5k、社区专职约 3.5k。能到 10k 的，通常是少数技术岗、项目负责人或带资源的销售，不是“回去就能找到”的普遍水平。</p>
+      <p><strong>产业结构和就业不对应。</strong>梁平 121 家规上工业企业，主要集中在食品加工、水泥建材、集成电路封测、装备制造。这些行业要么资本密集、用工少，要么是产线操作岗、工资 4–6k。低空经济目前更多是签约、开工和基金，岗位集中在飞行员、无人机操控、维修和运营，数量有限且需要执照。2025 年工业贷款 +16.9%，但增值税 -1.3%、企业所得税 -28.1%，说明钱进了资本密集项目，没有形成相应的税收和工资。</p>
+      <p><strong>所以你的判断基本成立。</strong>年轻人回梁平，现实的选择是：体制内（教师、医护、公务员，岗位少、竞争激烈）、服务业（3–5k）、工厂（4–6k）、少数技术/管理岗（8–12k）。10k 是当地的高薪，不是平均水平。</p>
+    </div>
+
+    <figure class="chart-card full">
+      <div class="chart-head">
+        <div>
+          <h3>月均收入与工资基准：10k 在梁平是什么位置</h3>
+          <p class="chart-sub">单位：元/月；2024 年渝东北工资、2025 年梁平居民收入</p>
+        </div>
+      </div>
+      <div class="chart" data-chart="salary-ladder" data-height="340"></div>
+      <figcaption class="source">来源：重庆市统计局 2024 年工资数据（渝东北片区）、梁平区 2025 年统计公报。居民人均可支配收入不是工资，口径低于工资；10k 为参考线，不是统计口径。</figcaption>
+      <details class="table-view"><summary>查看数据表</summary><div class="table-wrap" data-table></div></details>
+    </figure>
+
+    <div class="table-wrap" style="margin-top:18px;">
+      <table>
+        <thead><tr><th>岗位样本</th><th>月薪</th><th>单位 / 地点</th></tr></thead>
+        <tbody>
+          <tr><td>普工</td><td>5,000–8,000</td><td>重庆渝江压铸</td></tr>
+          <tr><td>理疗师</td><td>5,000–8,000</td><td>梁平红十字会医院</td></tr>
+          <tr><td>采购员</td><td>6,000–8,000</td><td>重庆平伟实业</td></tr>
+          <tr><td>区域经理</td><td>6,000–8,000</td><td>郑州佳龙食品</td></tr>
+          <tr><td>销售</td><td>5,000–8,000</td><td>重庆一城电器</td></tr>
+          <tr><td>辅警</td><td>约 4,500</td><td>梁平区公安局</td></tr>
+          <tr><td>社区专职</td><td>约 3,500</td><td>梁平社区</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="source">岗位样本来自梁平本地招聘平台和公众号汇总，不是全量统计，只用于说明薪资区间。</p>
+  </section>
+
+  <section id="conclusion">
+    <div class="section-head">
+      <div class="section-num">07</div>
+      <div>
+        <h2>结论：增长有没有变成钱</h2>
+        <p class="section-deck">梁平这三年不是“经济好不好”的问题，而是“增长有没有变成税收、利润和居民收入”的问题。用 A 级数据看，答案是：没有完全变成。</p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p><strong>第一，产出和税收背离。</strong>2025 年规上工业总产值 +6.4%，增值税 -1.3%，企业所得税 -28.1%。增值税连续两年负增长，企业所得税回到 2023 年以下。需要税务部门解释：是留抵退税、缓税，还是销售和利润本身没有产值说的那么好。</p>
+      <p><strong>第二，产出和用电背离。</strong>2024 年规上工业总产值 +6.4%，用电 +1.2%，综合能耗 -13.0%。能耗下降主要来自水泥，增长集中在低能耗行业和新入规企业。这不是造假证据，但说明“产值增长”的就业和税收含量可能低于表面。</p>
+      <p><strong>第三，财政靠非税和压支出。</strong>非税占比连续三年超过 53.8%；2025 年财政自给率从 44.8% 升到 55.4%，靠的是一般公共预算支出下降 15.1%，不是收入端改善。土地收入从 29.47 亿元降到 19.67 亿元，预算调整的 23.12 亿元没有完成。</p>
+      <p><strong>第四，居民在收缩。</strong>住户存款两年 +23.1%，住户贷款两年 -2.7%；社零增速 2.5%；小学在校生两年 -11.4%。居民不借钱、不消费、不生孩子，这比任何 GDP 数字都更能说明预期。</p>
+      <p><strong>第五，项目端没有恢复。</strong>施工许可 55 → 30 → 31 件，环评 33 → 15 → 19 个；招商签约 197.2 → 74.0 → 90.57 亿元。投资可以靠续建和设备撑住，但新开工的意愿没有回来。</p>
+      <p><strong>第六，年轻人回去的工资天花板很低。</strong>渝东北私营单位月均约 4,726 元，梁平城镇居民人均可支配收入约 4,285 元/月；本地岗位集中在 4–8k，10k 已经高于渝东北非私营平均。低空经济、集成电路是资本密集项目，用工少，短期内撑不起大量高薪岗位。</p>
+    </div>
+
+    <div class="notes">
+      <div class="note">
+        <h4>还需要补的硬数据</h4>
+        <p>土地成交逐宗合同（面积、金额、拿地主体）、企业注册与注销、司法被执行/破产、招聘岗位、夜间灯光、手机信令。这些能进一步验证“增长有没有变成就业和收入”。</p>
+      </div>
+      <div class="note">
+        <h4>A 级数据的局限</h4>
+        <p>税收受留抵退税、缓税、汇算清缴节奏影响；用电和能耗只覆盖规上企业；施工许可和环评是行政记录。单年数据不能直接等同于经营恶化，需要看三年趋势和明细。</p>
+      </div>
+      <div class="note">
+        <h4>结论边界</h4>
+        <p>本报告不判断“数据造假”，只判断“数据之间是否互相支持”。目前看，GDP 和规上工业总产值的增长，没有得到增值税、企业所得税和工业用电的充分支持。</p>
+      </div>
+    </div>
+
+    <div class="appendix-table">
+      <h3 style="font-size:17px;margin:28px 0 10px;">关键指标总表</h3>
+      <div class="table-wrap" id="appendix-table"></div>
+    </div>
+
+    <div class="prose" style="margin-top:28px;">
+      <h3 style="font-size:17px;margin:0 0 10px;">主要来源</h3>
+      <ul>
+        <li><a href="http://www.cqlp.gov.cn/tjj/zwgk_29135/fdzdgknr_29137/tjxx/sjfb/tjyb/202402/W020240229637959000206.pdf" target="_blank" rel="noopener">梁平区 2023 年 1–12 月季度数据（分税种、存贷款）</a></li>
+        <li><a href="http://www.cqlp.gov.cn/tjj/zwgk_29135/fdzdgknr_29137/tjxx/sjfb/tjyb/202503/W020250307553016597988.pdf" target="_blank" rel="noopener">梁平区 2024 年 1–12 月季度数据</a></li>
+        <li><a href="http://www.cqlp.gov.cn/tjj/zwgk_29135/fdzdgknr_29137/tjxx/sjfb/tjyb/202602/W020260210349527907759.pdf" target="_blank" rel="noopener">梁平区 2025 年 1–12 月季度数据</a></li>
+        <li><a href="http://www.cqlp.gov.cn/tjj/zwgk_29135/fdzdgknr_29137/tjxx/sjfb/tjnj/202412/W020260227379067989129.pdf" target="_blank" rel="noopener">梁平统计年鉴 2024（2023 年数据：能耗、商品房、企业数）</a></li>
+        <li><a href="http://www.cqlp.gov.cn/tjj/zwgk_29135/fdzdgknr_29137/tjxx/sjfb/tjnj/202512/W020260227378785042432.pdf" target="_blank" rel="noopener">梁平统计年鉴 2025（2024 年数据）</a></li>
+        <li><a href="http://www.cqlp.gov.cn/zwgk_178/fdzdgknr/tjxx/tjgb/202604/t20260417_15620138.html" target="_blank" rel="noopener">梁平区 2025 年国民经济和社会发展统计公报</a></li>
+        <li><a href="http://www.cqlp.gov.cn/zfcxjw/zwgk_28940/fdzdgknr_28942/zdxm/xmpz/202512/t20251229_15277653.html" target="_blank" rel="noopener">梁平区建筑工程施工许可登记表（2025 年）</a></li>
+        <li><a href="http://www.cqlp.gov.cn/sthjj/zwxx_29325/gsgg_29327/hjyxpjspgs/" target="_blank" rel="noopener">梁平区生态环境局环评审批公示</a></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    重庆梁平 · 税收、用电与存款里的三年 · 2023–2025 · 数据截至 2026 年 11 月<br>
+    方法与口径说明见 <a href="地区经济分析方案.md">地区经济分析方案</a>，原始指标见 <a href="重庆梁平.指标.csv">重庆梁平.指标.csv</a>。
+  </div>
+</footer>
+
+<script>
+const NS = "http://www.w3.org/2000/svg";
+
+const CHARTS = {
+  "tax-output": {
+    type: "grouped", years: [2024, 2025], unit: "%", height: 320, yMin: -40, yMax: 40,
+    title: "规上工业总产值、增值税与企业所得税增速",
+    series: [
+      { name: "规上工业总产值", values: [6.4, 6.4], cls: "series-1" },
+      { name: "增值税", values: [-6.2, -1.3], cls: "series-2" },
+      { name: "企业所得税", values: [30.2, -28.1], cls: "series-3" },
+    ],
+  },
+  "fiscal-structure": {
+    type: "stacked", years: [2023, 2024, 2025], unit: "亿元", yMax: 45, height: 320,
+    title: "一般公共预算收入结构",
+    series: [
+      { name: "税收收入", values: [16.1442, 17.3929, 18.2082], cls: "series-1" },
+      { name: "非税收入", values: [19.2061, 20.2162, 21.2937], cls: "series-2" },
+    ],
+    topLabels: ["非税 54.3%", "非税 53.8%", "非税 53.9%"],
+  },
+  "revenue-growth": {
+    type: "grouped", years: [2023, 2024, 2025], unit: "%", height: 320, yMin: -40, yMax: 40,
+    title: "税收、非税与政府性基金收入增速",
+    series: [
+      { name: "税收收入", values: [18.4, 7.7, 4.7], cls: "series-1" },
+      { name: "非税收入", values: [16.6, 5.3, 5.3], cls: "series-2" },
+      { name: "政府性基金收入", values: [31.3, -33.3, 0.02], cls: "series-3" },
+    ],
+    labelSeries: [2],
+  },
+  "industrial-index": {
+    type: "line", years: [2023, 2024, 2025], unit: "", yMin: 82, yMax: 116,
+    yTicks: [85, 90, 95, 100, 105, 110, 115], height: 320, valueDigits: 1,
+    title: "规上工业总产值、用电量与综合能耗指数",
+    series: [
+      { name: "规上工业总产值（2023=100）", values: [100, 106.4, 113.2], cls: "series-1" },
+      { name: "规上工业用电量（2023=100）", values: [100, 101.2, null], cls: "series-2" },
+      { name: "规上工业综合能耗（2023=100）", values: [100, 87.0, null], cls: "series-3" },
+    ],
+  },
+  "household": {
+    type: "line", years: [2023, 2024, 2025], unit: "亿元", yMin: 0, yMax: 750,
+    yTicks: [0, 150, 300, 450, 600, 750], height: 320, valueDigits: 1,
+    title: "住户存款与住户贷款",
+    series: [
+      { name: "住户存款", values: [553.2487, 618.1850, 681.1420], cls: "series-1" },
+      { name: "住户贷款", values: [138.5313, 131.0871, 134.7246], cls: "series-2" },
+    ],
+  },
+  "industrial-credit": {
+    type: "grouped", years: [2024, 2025], unit: "%", height: 320, yMin: -10, yMax: 35,
+    title: "工业贷款与增值税增速",
+    series: [
+      { name: "工业贷款", values: [-4.3, 16.9], cls: "series-1" },
+      { name: "增值税", values: [-6.2, -1.3], cls: "series-2" },
+    ],
+  },
+  "permits": {
+    type: "grouped", years: [2023, 2024, 2025], unit: "", height: 320, yMax: 60,
+    title: "施工许可与环评审批",
+    series: [
+      { name: "施工许可证（件）", values: [55, 30, 31], cls: "series-1" },
+      { name: "环评审批（个）", values: [33, 15, 19], cls: "series-2" },
+    ],
+  },
+  "land-fund": {
+    type: "bar", years: [2023, 2024, 2025], unit: "亿元", height: 320, yMax: 35, valueDigits: 2,
+    title: "政府性基金收入",
+    series: [{ name: "政府性基金收入", values: [29.4708, 19.6654, 19.6698], cls: "series-1" }],
+  },
+  "real-estate-index": {
+    type: "line", years: [2023, 2024, 2025], unit: "", yMin: 50, yMax: 105,
+    yTicks: [50, 60, 70, 80, 90, 100], height: 300, valueDigits: 1,
+    title: "商品房销售面积与销售额指数",
+    series: [
+      { name: "销售面积（2023=100）", values: [100, 72.4, 75.8], cls: "series-1" },
+      { name: "销售额（2023=100）", values: [100, 63.9, 55.3], cls: "series-2" },
+    ],
+  },
+  "real-estate-profit": {
+    type: "bar", years: [2023, 2024], unit: "亿元", height: 300, yMin: -0.6, yMax: 2.4, valueDigits: 2,
+    title: "房地产开发利润",
+    series: [{ name: "房地产开发利润", values: [2.11992, -0.22264], cls: "series-1" }],
+  },
+  "population-index": {
+    type: "line", years: [2023, 2024, 2025], unit: "", yMin: 85, yMax: 102,
+    yTicks: [85, 90, 95, 100], height: 300, valueDigits: 1,
+    title: "常住人口与小学在校生指数",
+    series: [
+      { name: "常住人口（2023=100）", values: [100, 99.38, 99.14], cls: "series-1" },
+      { name: "小学在校生（2023=100）", values: [100, 94.50, 88.61], cls: "series-2" },
+    ],
+    tableHeaders: ["指标", "2023", "2024", "2025"],
+    tableRows: [
+      ["常住人口（万人）", "62.89", "62.50", "62.35"],
+      ["小学在校生（人）", "39920", "37723", "35372"],
+      ["常住人口指数", "100.0", "99.4", "99.1"],
+      ["小学在校生指数", "100.0", "94.5", "88.6"],
+    ],
+  },
+  "new-business": {
+    type: "bar", years: [2023, 2024, 2025], unit: "户", height: 280, yMax: 19000,
+    title: "新增市场主体",
+    series: [{ name: "新增市场主体", values: [16956, 6839, 5514], cls: "series-1" }],
+  },
+  "consumption": {
+    type: "line", years: [2023, 2024, 2025], unit: "%", yMin: 0, yMax: 50,
+    yTicks: [0, 10, 20, 30, 40, 50], height: 280, valueDigits: 1,
+    title: "社零增速与快递业务量增速",
+    series: [
+      { name: "社零增速", values: [7.2, 2.3, 2.5], cls: "series-1" },
+      { name: "快递业务量增速（代理）", values: [31.2, 41.8, 17.2], cls: "series-2" },
+    ],
+  },
+  "salary-ladder": {
+    type: "hbar", unit: "元/月", height: 340, reference: { value: 10000, label: "10k 门槛" },
+    title: "月均收入与工资基准",
+    items: [
+      { name: "重庆非私营单位", value: 9796 },
+      { name: "渝东北非私营单位", value: 8330 },
+      { name: "渝东北私营单位", value: 4726 },
+      { name: "梁平城镇居民", value: 4285 },
+      { name: "梁平全体居民", value: 3274 },
+    ],
+    tableHeaders: ["口径", "月均（元）", "说明"],
+    tableRows: [
+      ["重庆非私营单位", "9,796", "2024 年平均工资 ÷ 12"],
+      ["渝东北非私营单位", "8,330", "2024 年平均工资 ÷ 12"],
+      ["渝东北私营单位", "4,726", "2024 年平均工资 ÷ 12"],
+      ["梁平城镇居民", "4,285", "2025 年人均可支配收入 ÷ 12"],
+      ["梁平全体居民", "3,274", "2025 年人均可支配收入 ÷ 12"],
+      ["10k 门槛", "10,000", "参考线，不是统计口径"],
+    ],
+  },
+};
+
+const APPENDIX_ROWS = [
+  ["GDP 增速（C）", "3.0%", "6.0%", "6.3%", "政府叙事"],
+  ["规上工业总产值增速（C）", "未披露", "+6.4%", "+6.4%", "政府叙事"],
+  ["增值税（亿元）", "3.68", "3.45", "3.40", "税务/季度数据"],
+  ["增值税增速", "+37.1%", "-6.2%", "-1.3%", "税务/季度数据"],
+  ["企业所得税（亿元）", "0.79", "1.03", "0.74", "税务/季度数据"],
+  ["企业所得税增速", "-11.3%", "+30.2%", "-28.1%", "税务/季度数据"],
+  ["非税收入（亿元）", "19.21", "20.22", "21.29", "财政/季度数据"],
+  ["非税占比", "54.3%", "53.8%", "53.9%", "收入减税收"],
+  ["税收收入（亿元）", "16.14", "17.39", "18.21", "财政/季度数据"],
+  ["一般公共预算收入（亿元）", "35.35", "37.61", "39.50", "财政/季度数据"],
+  ["一般公共预算支出（亿元）", "77.51", "83.92", "71.28", "2025 年 -15.1%"],
+  ["财政自给率", "45.6%", "44.8%", "55.4%", "收入 ÷ 支出"],
+  ["政府性基金收入（亿元）", "29.47", "19.67", "19.67", "2025 实际执行"],
+  ["土地财政依赖度", "83.4%", "52.3%", "49.8%", "基金 ÷ 一般公共预算收入"],
+  ["住户存款（亿元）", "553.25", "618.19", "681.14", "人行/季度数据"],
+  ["住户贷款（亿元）", "138.53", "131.09", "134.72", "人行/季度数据"],
+  ["工业贷款（亿元）", "20.49", "19.61", "22.94", "人行/季度数据"],
+  ["规上工业用电（亿千瓦时）", "3.65", "3.70", "未披露", "统计年鉴"],
+  ["规上工业综合能耗（万吨标煤）", "24.73", "21.51", "未披露", "统计年鉴"],
+  ["规上工业企业数（家）", "117", "121", "未披露", "统计年鉴"],
+  ["施工许可证（件）", "55", "30", "31", "区住建委"],
+  ["环评审批（个）", "33", "15", "19", "区生态环境局"],
+  ["商品房销售面积（万平方米）", "39.94", "28.92", "30.28", "2025 为推算"],
+  ["商品房销售额（亿元）", "18.89", "12.08", "10.44", "2025 为推算"],
+  ["房地产开发利润（亿元）", "+2.12", "-0.22", "未披露", "统计年鉴"],
+  ["新增市场主体（户）", "16956", "6839", "5514", "两年 -67.5%"],
+  ["常住人口（万人）", "62.89", "62.50", "62.35", "统计公报"],
+  ["小学在校生（人）", "39920", "37723", "35372", "两年 -11.4%"],
+  ["社零增速（C）", "+7.2%", "+2.3%", "+2.5%", "政府叙事"],
+  ["快递业务量增速（代理）", "+31.2%", "+41.8%", "+17.2%", "邮政寄递代理"],
+  ["招商签约额（亿元，C）", "197.2", "74.0", "90.57", "2025 为截至 9 月"],
+];
+
+function $(sel, root) { return (root || document).querySelector(sel); }
+function el(tag, attrs) {
+  const node = document.createElementNS(NS, tag);
+  if (attrs) Object.keys(attrs).forEach(function (k) { node.setAttribute(k, attrs[k]); });
+  return node;
+}
+function text(x, y, str, className, anchor) {
+  const node = el("text", { x: x, y: y, class: className, "text-anchor": anchor || "start" });
+  node.textContent = str;
+  return node;
+}
+function fmt(v, digits) {
+  if (v === null || v === undefined || Number.isNaN(v)) return "—";
+  const d = (digits === undefined) ? 1 : digits;
+  return Number(v).toFixed(d).replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "");
+}
+function fmtUnit(v, unit, digits) {
+  if (v === null || v === undefined) return "—";
+  return fmt(v, digits) + (unit || "");
+}
+function niceTicks(min, max, count) {
+  const span = max - min;
+  const rawStep = span / Math.max(1, count - 1);
+  const mag = Math.pow(10, Math.floor(Math.log10(rawStep || 1)));
+  const norm = rawStep / mag;
+  const step = mag * (norm < 1.5 ? 1 : norm <= 3 ? 2 : norm <= 7 ? 5 : 10);
+  const start = Math.ceil(min / step) * step;
+  const ticks = [];
+  for (let v = start; v <= max + step * 0.001; v += step) ticks.push(v);
+  return ticks;
+}
+function debounce(fn, ms) {
+  let timer;
+  return function () { clearTimeout(timer); timer = setTimeout(fn, ms); };
+}
+function ensureTip(container) {
+  let tip = container.querySelector(".chart-tip");
+  if (!tip) { tip = document.createElement("div"); tip.className = "chart-tip"; container.appendChild(tip); }
+  return tip;
+}
+function showTip(tip, x, y, title, rows) {
+  tip.textContent = "";
+  const t = document.createElement("div"); t.className = "tip-title"; t.textContent = title; tip.appendChild(t);
+  rows.forEach(function (row) {
+    const line = document.createElement("div"); line.className = "tip-row";
+    const key = document.createElement("span"); key.className = "tip-key " + row[2];
+    const name = document.createElement("span"); name.className = "tip-name"; name.textContent = row[0];
+    const value = document.createElement("span"); value.className = "tip-value"; value.textContent = row[1];
+    line.appendChild(key); line.appendChild(name); line.appendChild(value); tip.appendChild(line);
+  });
+  tip.style.left = x + "px"; tip.style.top = y + "px"; tip.classList.add("show");
+}
+function hideTip(tip) { tip.classList.remove("show"); }
+
+function renderLegend(container, series, type) {
+  const card = container.closest(".chart-card");
+  const legend = card ? card.querySelector(".legend") : null;
+  if (!legend) return;
+  legend.textContent = "";
+  if (!series || series.length < 2) return;
+  series.forEach(function (s) {
+    const item = document.createElement("span"); item.className = "legend-item";
+    const key = document.createElement("span");
+    key.className = "legend-key " + ((type === "bar" || type === "grouped" || type === "stacked") ? "bar " : "") + s.cls;
+    const label = document.createElement("span"); label.textContent = s.name;
+    item.appendChild(key); item.appendChild(label); legend.appendChild(item);
+  });
+}
+function renderTable(container, cfg) {
+  const card = container.closest(".chart-card");
+  const wrap = card ? card.querySelector("[data-table]") : null;
+  if (!wrap) return;
+  wrap.textContent = "";
+  const table = document.createElement("table");
+  const thead = document.createElement("thead");
+  const headRow = document.createElement("tr");
+  const headers = cfg.tableHeaders || ["年份"].concat((cfg.series || []).map(function (s) { return s.name; }));
+  headers.forEach(function (h) { const th = document.createElement("th"); th.textContent = h; headRow.appendChild(th); });
+  thead.appendChild(headRow); table.appendChild(thead);
+  const tbody = document.createElement("tbody");
+  let rows = cfg.tableRows;
+  if (!rows) {
+    rows = (cfg.years || []).map(function (year, i) {
+      return [String(year)].concat((cfg.series || []).map(function (s) {
+        const v = s.values[i];
+        return (v === null || v === undefined) ? "—" : fmtUnit(v, cfg.unit, cfg.valueDigits);
+      }));
+    });
+  }
+  rows.forEach(function (row) {
+    const tr = document.createElement("tr");
+    row.forEach(function (cell, i) {
+      const node = document.createElement(i === 0 ? "th" : "td");
+      node.textContent = cell; tr.appendChild(node);
+    });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody); wrap.appendChild(table);
+}
+
+function renderLine(container, cfg) {
+  const w = Math.max(container.clientWidth || 640, 320);
+  const h = cfg.height || 320;
+  const margin = w < 520
+    ? { top: 24, right: 60, bottom: 34, left: 38 }
+    : { top: 24, right: 86, bottom: 36, left: 46 };
+  const iw = w - margin.left - margin.right;
+  const ih = h - margin.top - margin.bottom;
+  const years = cfg.years;
+  const yMin = cfg.yMin, yMax = cfg.yMax;
+  const yTicks = cfg.yTicks || niceTicks(yMin, yMax, 5);
+  const x = function (i) { return years.length === 1 ? margin.left + iw / 2 : margin.left + (i / (years.length - 1)) * iw; };
+  const y = function (v) { return margin.top + ih - ((v - yMin) / (yMax - yMin)) * ih; };
+
+  const svg = el("svg", { width: w, height: h, viewBox: "0 0 " + w + " " + h, role: "img", "aria-label": cfg.title });
+  yTicks.forEach(function (tick) {
+    svg.appendChild(el("line", { x1: margin.left, y1: y(tick), x2: margin.left + iw, y2: y(tick), class: "grid-line" }));
+    svg.appendChild(text(margin.left - 8, y(tick) + 4, fmt(tick, 0), "tick-text", "end"));
+  });
+  if (yMin < 0 && yMax > 0) {
+    svg.appendChild(el("line", { x1: margin.left, y1: y(0), x2: margin.left + iw, y2: y(0), class: "axis-line" }));
+  }
+  years.forEach(function (year, i) {
+    svg.appendChild(text(x(i), h - 12, String(year), "tick-text", "middle"));
+  });
+
+  cfg.series.forEach(function (s, si) {
+    const seriesCls = "series-" + (si + 1);
+    const points = s.values.map(function (v, i) { return { v: v, i: i }; })
+      .filter(function (p) { return p.v !== null && p.v !== undefined; });
+    if (!points.length) return;
+    const d = points.map(function (p, k) { return (k === 0 ? "M" : "L") + x(p.i) + "," + y(p.v); }).join(" ");
+    svg.appendChild(el("path", { d: d, class: "line " + seriesCls }));
+    points.forEach(function (p) {
+      svg.appendChild(el("circle", { cx: x(p.i), cy: y(p.v), r: 4, class: "dot " + seriesCls }));
+    });
+    const lastPoint = points[points.length - 1];
+    const label = cfg.unit === "%" ? fmtUnit(lastPoint.v, "%", cfg.valueDigits) : fmt(lastPoint.v, cfg.valueDigits);
+    svg.appendChild(text(x(lastPoint.i) + 8, y(lastPoint.v) + 4, label, "value-label", "start"));
+  });
+
+  const cross = el("line", { x1: 0, y1: margin.top, x2: 0, y2: margin.top + ih, class: "crosshair" });
+  cross.style.display = "none";
+  svg.appendChild(cross);
+  const overlay = el("rect", { x: margin.left, y: margin.top, width: iw, height: ih, fill: "transparent" });
+  overlay.style.cursor = "crosshair";
+  svg.appendChild(overlay);
+  const tip = ensureTip(container);
+  overlay.addEventListener("pointermove", function (ev) {
+    const rect = svg.getBoundingClientRect();
+    const px = ev.clientX - rect.left;
+    const step = years.length > 1 ? iw / (years.length - 1) : iw;
+    const i = Math.max(0, Math.min(years.length - 1, Math.round((px - margin.left) / step)));
+    const cx = x(i);
+    cross.setAttribute("x1", cx); cross.setAttribute("x2", cx); cross.style.display = "";
+    const rows = cfg.series.map(function (s, si) {
+      const v = s.values[i];
+      return [s.name, (v === null || v === undefined) ? "—" : fmtUnit(v, cfg.unit, cfg.valueDigits), "series-" + (si + 1)];
+    });
+    showTip(tip, cx, margin.top + 6, String(years[i]), rows);
+  });
+  overlay.addEventListener("pointerleave", function () { cross.style.display = "none"; hideTip(tip); });
+
+  container.appendChild(svg);
+  renderLegend(container, cfg.series, cfg.type);
+  renderTable(container, cfg);
+}
+
+function barPath(cx, yTop, yBase, width, radius) {
+  const r = Math.min(radius || 4, width / 2, Math.abs(yBase - yTop));
+  const x0 = cx - width / 2, x1 = cx + width / 2;
+  if (yTop <= yBase) {
+    return "M" + x0 + "," + yBase + " L" + x0 + "," + (yTop + r) +
+      " Q" + x0 + "," + yTop + " " + (x0 + r) + "," + yTop +
+      " L" + (x1 - r) + "," + yTop + " Q" + x1 + "," + yTop + " " + x1 + "," + (yTop + r) +
+      " L" + x1 + "," + yBase + " Z";
+  }
+  return "M" + x0 + "," + yBase + " L" + x0 + "," + (yTop - r) +
+    " Q" + x0 + "," + yTop + " " + (x0 + r) + "," + yTop +
+    " L" + (x1 - r) + "," + yTop + " Q" + x1 + "," + yTop + " " + x1 + "," + (yTop - r) +
+    " L" + x1 + "," + yBase + " Z";
+}
+
+function renderBar(container, cfg) {
+  const w = Math.max(container.clientWidth || 640, 320);
+  const h = cfg.height || 280;
+  const margin = { top: 30, right: 18, bottom: 34, left: 46 };
+  const iw = w - margin.left - margin.right;
+  const ih = h - margin.top - margin.bottom;
+  const years = cfg.years;
+  const values = cfg.series[0].values;
+  const yMax = cfg.yMax || Math.max.apply(null, values) * 1.15;
+  const yMin = (cfg.yMin === undefined) ? 0 : cfg.yMin;
+  const y = function (v) { return margin.top + ih - ((v - yMin) / (yMax - yMin)) * ih; };
+  const band = iw / years.length;
+  const bw = Math.min(24, band * 0.45);
+  const svg = el("svg", { width: w, height: h, viewBox: "0 0 " + w + " " + h, role: "img", "aria-label": cfg.title });
+  const ticks = niceTicks(yMin, yMax, 5);
+  ticks.forEach(function (tick) {
+    svg.appendChild(el("line", { x1: margin.left, y1: y(tick), x2: margin.left + iw, y2: y(tick), class: "grid-line" }));
+    svg.appendChild(text(margin.left - 8, y(tick) + 4, fmt(tick, 1), "tick-text", "end"));
+  });
+  if (yMin < 0 && yMax > 0) {
+    svg.appendChild(el("line", { x1: margin.left, y1: y(0), x2: margin.left + iw, y2: y(0), class: "axis-line" }));
+  }
+  const tip = ensureTip(container);
+  years.forEach(function (year, i) {
+    const cx = margin.left + (i + 0.5) * band;
+    const top = y(values[i]);
+    const base = y(0);
+    svg.appendChild(el("path", { d: barPath(cx, top, base, bw, 4), class: "bar " + (values[i] < 0 ? "negative" : cfg.series[0].cls) }));
+    svg.appendChild(text(cx, values[i] >= 0 ? top - 8 : top + 16, fmtUnit(values[i], cfg.unit, cfg.valueDigits), "value-label", "middle"));
+    svg.appendChild(text(cx, h - 12, String(year), "tick-text", "middle"));
+    const hit = el("rect", { x: cx - bw / 2 - 8, y: Math.min(top, base) - 4, width: bw + 16, height: Math.abs(base - top) + 8, class: "hit" });
+    hit.style.cursor = "pointer";
+    hit.addEventListener("pointermove", function () {
+      showTip(tip, cx, Math.min(top, base) - 10, String(year), [[cfg.series[0].name, fmtUnit(values[i], cfg.unit, cfg.valueDigits), cfg.series[0].cls]]);
+    });
+    hit.addEventListener("pointerleave", function () { hideTip(tip); });
+    svg.appendChild(hit);
+  });
+  container.appendChild(svg);
+  renderLegend(container, cfg.series, cfg.type);
+  renderTable(container, cfg);
+}
+
+function renderGrouped(container, cfg) {
+  const w = Math.max(container.clientWidth || 640, 320);
+  const h = cfg.height || 320;
+  const margin = { top: 30, right: 18, bottom: 34, left: 46 };
+  const iw = w - margin.left - margin.right;
+  const ih = h - margin.top - margin.bottom;
+  const years = cfg.years;
+  const all = cfg.series.flatMap(function (s) { return s.values; }).filter(function (v) { return v !== null; });
+  const yMax = (cfg.yMax === undefined) ? Math.max.apply(null, all) * 1.15 : cfg.yMax;
+  const yMin = (cfg.yMin === undefined) ? 0 : cfg.yMin;
+  const y = function (v) { return margin.top + ih - ((v - yMin) / (yMax - yMin)) * ih; };
+  const band = iw / years.length;
+  const groupW = band * 0.66;
+  const bw = Math.min(20, (groupW - 2 * (cfg.series.length - 1)) / cfg.series.length);
+  const svg = el("svg", { width: w, height: h, viewBox: "0 0 " + w + " " + h, role: "img", "aria-label": cfg.title });
+  const ticks = niceTicks(yMin, yMax, 5);
+  ticks.forEach(function (tick) {
+    svg.appendChild(el("line", { x1: margin.left, y1: y(tick), x2: margin.left + iw, y2: y(tick), class: "grid-line" }));
+    svg.appendChild(text(margin.left - 8, y(tick) + 4, fmt(tick, 0), "tick-text", "end"));
+  });
+  if (yMin < 0 && yMax > 0) {
+    svg.appendChild(el("line", { x1: margin.left, y1: y(0), x2: margin.left + iw, y2: y(0), class: "axis-line" }));
+  }
+  const tip = ensureTip(container);
+  years.forEach(function (year, i) {
+    const center = margin.left + (i + 0.5) * band;
+    svg.appendChild(text(center, h - 12, String(year), "tick-text", "middle"));
+    cfg.series.forEach(function (s, si) {
+      const cx = center - (bw * cfg.series.length + 2 * (cfg.series.length - 1)) / 2 + si * (bw + 2) + bw / 2;
+      const top = y(s.values[i]);
+      const base = y(0);
+      svg.appendChild(el("path", { d: barPath(cx, top, base, bw, 4), class: "bar " + s.cls }));
+      if (!cfg.labelSeries || cfg.labelSeries.indexOf(si) !== -1) {
+        svg.appendChild(text(cx, s.values[i] >= 0 ? top - 7 : top + 15, fmt(s.values[i], 1), "value-label", "middle"));
+      }
+      const hit = el("rect", { x: cx - bw / 2 - 6, y: Math.min(top, base) - 4, width: bw + 12, height: Math.abs(base - top) + 8, class: "hit" });
+      hit.style.cursor = "pointer";
+      hit.addEventListener("pointermove", function () {
+        showTip(tip, cx, Math.min(top, base) - 10, String(year), [[s.name, fmtUnit(s.values[i], cfg.unit, 1), s.cls]]);
+      });
+      hit.addEventListener("pointerleave", function () { hideTip(tip); });
+      svg.appendChild(hit);
+    });
+  });
+  container.appendChild(svg);
+  renderLegend(container, cfg.series, cfg.type);
+  renderTable(container, cfg);
+}
+
+function renderStacked(container, cfg) {
+  const w = Math.max(container.clientWidth || 640, 320);
+  const h = cfg.height || 320;
+  const margin = { top: 34, right: 18, bottom: 34, left: 46 };
+  const iw = w - margin.left - margin.right;
+  const ih = h - margin.top - margin.bottom;
+  const years = cfg.years;
+  const yMax = cfg.yMax || 100;
+  const y = function (v) { return margin.top + ih - (v / yMax) * ih; };
+  const band = iw / years.length;
+  const bw = Math.min(28, band * 0.5);
+  const svg = el("svg", { width: w, height: h, viewBox: "0 0 " + w + " " + h, role: "img", "aria-label": cfg.title });
+  const ticks = niceTicks(0, yMax, 5);
+  ticks.forEach(function (tick) {
+    svg.appendChild(el("line", { x1: margin.left, y1: y(tick), x2: margin.left + iw, y2: y(tick), class: "grid-line" }));
+    svg.appendChild(text(margin.left - 8, y(tick) + 4, fmt(tick, 0), "tick-text", "end"));
+  });
+  svg.appendChild(el("line", { x1: margin.left, y1: y(0), x2: margin.left + iw, y2: y(0), class: "axis-line" }));
+  const tip = ensureTip(container);
+  years.forEach(function (year, i) {
+    const total = cfg.series.reduce(function (sum, s) { return sum + s.values[i]; }, 0);
+    const center = margin.left + (i + 0.5) * band;
+    let cursor = 0;
+    svg.appendChild(text(center, h - 12, String(year), "tick-text", "middle"));
+    if (cfg.topLabels && cfg.topLabels[i]) {
+      svg.appendChild(text(center, y(total) - 9, cfg.topLabels[i], "value-label", "middle"));
+    }
+    cfg.series.forEach(function (s) {
+      const value = s.values[i];
+      const yTop = y(cursor + value);
+      const yBase = y(cursor);
+      const height = Math.max(0, yBase - yTop - 2);
+      svg.appendChild(el("rect", { x: center - bw / 2, y: yTop + 1, width: bw, height: height, rx: 3, class: "seg " + s.cls }));
+      const share = total ? (value / total) * 100 : 0;
+      if (height > 24 && bw >= 24) {
+        svg.appendChild(text(center, yTop + height / 2 + 4, Math.round(share) + "%", "seg-label", "middle"));
+      }
+      const hit = el("rect", { x: center - bw / 2 - 6, y: yTop, width: bw + 12, height: Math.max(4, yBase - yTop), class: "hit" });
+      hit.style.cursor = "pointer";
+      hit.addEventListener("pointermove", function () {
+        showTip(tip, center, yTop - 6, String(year), [[s.name, fmtUnit(value, cfg.unit, 1) + "（" + fmt(share, 1) + "%）", s.cls]]);
+      });
+      hit.addEventListener("pointerleave", function () { hideTip(tip); });
+      svg.appendChild(hit);
+      cursor += value;
+    });
+  });
+  container.appendChild(svg);
+  renderLegend(container, cfg.series, cfg.type);
+  renderTable(container, cfg);
+}
+
+function hBarPath(x0, x1, y0, height, radius) {
+  const r = Math.min(radius || 4, height / 2, Math.abs(x1 - x0));
+  if (x1 >= x0) {
+    return "M" + x0 + "," + y0 + " L" + (x1 - r) + "," + y0 +
+      " Q" + x1 + "," + y0 + " " + x1 + "," + (y0 + r) +
+      " L" + x1 + "," + (y0 + height - r) + " Q" + x1 + "," + (y0 + height) + " " + (x1 - r) + "," + (y0 + height) +
+      " L" + x0 + "," + (y0 + height) + " Z";
+  }
+  return "M" + x0 + "," + y0 + " L" + (x1 + r) + "," + y0 +
+    " Q" + x1 + "," + y0 + " " + x1 + "," + (y0 + r) +
+    " L" + x1 + "," + (y0 + height - r) + " Q" + x1 + "," + (y0 + height) + " " + (x1 + r) + "," + (y0 + height) +
+    " L" + x0 + "," + (y0 + height) + " Z";
+}
+
+function renderHBar(container, cfg) {
+  const w = Math.max(container.clientWidth || 640, 320);
+  const h = cfg.height || 320;
+  const margin = w < 520
+    ? { top: 28, right: 56, bottom: 30, left: 104 }
+    : { top: 30, right: 66, bottom: 30, left: 126 };
+  const iw = w - margin.left - margin.right;
+  const ih = h - margin.top - margin.bottom;
+  const items = cfg.items.slice().sort(function (a, b) { return b.value - a.value; });
+  const maxValue = Math.max(cfg.reference ? cfg.reference.value : 0, Math.max.apply(null, items.map(function (it) { return it.value; })));
+  const x = function (v) { return margin.left + (v / (maxValue * 1.08)) * iw; };
+  const band = ih / items.length;
+  const bh = Math.min(24, band * 0.52);
+  const svg = el("svg", { width: w, height: h, viewBox: "0 0 " + w + " " + h, role: "img", "aria-label": cfg.title });
+  const ticks = [0, 2500, 5000, 7500, 10000];
+  ticks.forEach(function (tick) {
+    svg.appendChild(el("line", { x1: x(tick), y1: margin.top, x2: x(tick), y2: margin.top + ih, class: "grid-line" }));
+    svg.appendChild(text(x(tick), h - 10, tick === 0 ? "0" : (tick / 1000) + "k", "tick-text", "middle"));
+  });
+  const tip = ensureTip(container);
+  items.forEach(function (it, i) {
+    const y0 = margin.top + i * band + (band - bh) / 2;
+    const x1 = x(it.value);
+    svg.appendChild(el("path", { d: hBarPath(margin.left, x1, y0, bh, 4), class: "bar series-1" }));
+    svg.appendChild(text(margin.left - 10, y0 + bh / 2 + 4, it.name, "cat-label", "end"));
+    svg.appendChild(text(x1 + 6, y0 + bh / 2 + 4, fmt(it.value, 0), "value-label", "start"));
+    const hit = el("rect", { x: margin.left, y: y0 - 4, width: Math.max(4, x1 - margin.left), height: bh + 8, class: "hit" });
+    hit.style.cursor = "pointer";
+    hit.addEventListener("pointermove", function () {
+      showTip(tip, x1, y0 - 4, it.name, [["月均", fmt(it.value, 0) + " " + cfg.unit, "series-1"]]);
+    });
+    hit.addEventListener("pointerleave", function () { hideTip(tip); });
+    svg.appendChild(hit);
+  });
+  if (cfg.reference) {
+    const rx = x(cfg.reference.value);
+    svg.appendChild(el("line", { x1: rx, y1: margin.top, x2: rx, y2: margin.top + ih, class: "reference-line" }));
+    svg.appendChild(text(rx, margin.top - 10, cfg.reference.label, "reference-label", "middle"));
+  }
+  container.appendChild(svg);
+  renderTable(container, cfg);
+}
+
+function renderChart(container, cfg) {
+  container.textContent = "";
+  if (cfg.type === "line") renderLine(container, cfg);
+  else if (cfg.type === "bar") renderBar(container, cfg);
+  else if (cfg.type === "grouped") renderGrouped(container, cfg);
+  else if (cfg.type === "stacked") renderStacked(container, cfg);
+  else if (cfg.type === "hbar") renderHBar(container, cfg);
+}
+
+function renderAppendix() {
+  const wrap = document.getElementById("appendix-table");
+  if (!wrap) return;
+  wrap.textContent = "";
+  const table = document.createElement("table");
+  const thead = document.createElement("thead");
+  const hr = document.createElement("tr");
+  ["指标", "2023", "2024", "2025", "说明"].forEach(function (h) {
+    const th = document.createElement("th"); th.textContent = h; hr.appendChild(th);
+  });
+  thead.appendChild(hr); table.appendChild(thead);
+  const tbody = document.createElement("tbody");
+  APPENDIX_ROWS.forEach(function (row) {
+    const tr = document.createElement("tr");
+    row.forEach(function (cell, i) {
+      const node = document.createElement(i === 0 ? "th" : "td");
+      node.textContent = cell; tr.appendChild(node);
+    });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody); wrap.appendChild(table);
+}
+
+function renderAll() {
+  document.querySelectorAll("[data-chart]").forEach(function (node) {
+    const cfg = CHARTS[node.getAttribute("data-chart")];
+    if (cfg) renderChart(node, cfg);
+  });
+  renderAppendix();
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", renderAll);
+} else {
+  renderAll();
+}
+window.addEventListener("resize", debounce(renderAll, 160));
+</script>
+</body>
+</html>
